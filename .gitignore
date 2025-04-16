@@ -1,0 +1,85 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+.env
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Firebase Web Configuration
+WEB_API_KEY=AIzaSyCzSgrOzkeEl4Lxa8Y-BvVf-NDQ5J00lfk
+WEB_APP_ID=1:433937412282:web:5b5b8e4ead50aab1059283
+WEB_MESSAGING_SENDER_ID=433937412282
+WEB_AUTH_DOMAIN=amar-thikana-d553f.firebaseapp.com
+WEB_MEASUREMENT_ID=G-4KT3R8X65B
+
+# Firebase Android Configuration
+ANDROID_API_KEY=AIzaSyCDTPJeZ6bP1A-wmr5107IKgv5vO2QPO3Q
+ANDROID_APP_ID=1:433937412282:android:2f8153bca799bed7059283
+ANDROID_MESSAGING_SENDER_ID=433937412282
+
+# Firebase iOS Configuration
+IOS_API_KEY=AIzaSyB1WIUwFpe0pQZZfpCq-qqUSMgNPDTsloE
+IOS_APP_ID=1:433937412282:ios:b56bb65777392adb059283
+IOS_BUNDLE_ID=com.example.amarThikana
+
+# Firebase macOS Configuration
+MACOS_API_KEY=AIzaSyB1WIUwFpe0pQZZfpCq-qqUSMgNPDTsloE
+MACOS_APP_ID=1:433937412282:ios:b56bb65777392adb059283
+MACOS_BUNDLE_ID=com.example.amarThikana
+
+# Firebase Windows Configuration
+WINDOWS_API_KEY=AIzaSyCzSgrOzkeEl4Lxa8Y-BvVf-NDQ5J00lfk
+WINDOWS_APP_ID=1:433937412282:web:fed928bb0fb082a5059283
+WINDOWS_MESSAGING_SENDER_ID=433937412282
+WINDOWS_AUTH_DOMAIN=amar-thikana-d553f.firebaseapp.com
+WINDOWS_MEASUREMENT_ID=G-72KM4W30N1
+
+# Common Configuration
+PROJECT_ID=amar-thikana-d553f
+STORAGE_BUCKET=amar-thikana-d553f.firebasestorage.app
+
+# Environment variables
+.env
+
+# Firebase configuration files
+firebase_options.dart

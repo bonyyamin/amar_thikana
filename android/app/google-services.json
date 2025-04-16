@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "433937412282",
+    "project_id": "amar-thikana-d553f",
+    "storage_bucket": "amar-thikana-d553f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:433937412282:android:2f8153bca799bed7059283",
+        "android_client_info": {
+          "package_name": "com.example.amar_thikana"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDTPJeZ6bP1A-wmr5107IKgv5vO2QPO3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
