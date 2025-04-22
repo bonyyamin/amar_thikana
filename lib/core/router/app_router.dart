@@ -1,3 +1,4 @@
+import 'package:amar_thikana/features/onboarding/screens/onboarding_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 // Import placeholder screens later
@@ -29,6 +30,10 @@ class AppRouter {
          path: '/splash',
          builder: (context, state) => const PlaceholderScreen(title: 'Splash Screen'),
        ),
+       GoRoute( // Add this route
+       path: '/onboarding',
+       builder: (context, state) => const OnboardingScreen(),
+     ),
        GoRoute(
          path: '/home', // Your main screen after login/setup
          builder: (context, state) => const PlaceholderScreen(title: 'Home Screen'),
