@@ -1,129 +1,153 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'app_colors.dart';
+import 'app_text_styles.dart';
+import 'app_dimensions.dart';
+import 'theme_extension.dart';
 
 class AppTheme {
-  // Define a seed color - Material 3 will generate palettes from this
-  static const Color _seedColor = Colors.blue; // Choose your primary brand color
-
-  // --- Light Theme ---
-  static ThemeData get lightTheme {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: _seedColor,
+  static ThemeData light() {
+    return ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
-    );
-
-    final textTheme = _buildTextTheme(baseTextTheme: GoogleFonts.sourceSans3TextTheme(ThemeData.light().textTheme), colorScheme: colorScheme);
-
-
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: colorScheme,
-      textTheme: textTheme,
-      // Add other theme customizations here (AppBarTheme, ButtonTheme, CardTheme, etc.)
-      // Example:
-      appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surface, // Or surfaceContainerHighest etc.
-        foregroundColor: colorScheme.onSurface,
-        elevation: 0,
-        titleTextStyle: textTheme.titleLarge,
+      primaryColor: AppColors.primary,
+      scaffoldBackgroundColor: AppColors.background,
+      cardColor: AppColors.cardBackground,
+      dividerColor: AppColors.divider,
+      
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primary,
+        secondary: AppColors.secondary,
+        surface: AppColors.surface,
+        background: AppColors.background,
+        error: AppColors.error,
       ),
+
+      textTheme: TextTheme(
+        displayLarge: AppTextStyles.h1,
+        displayMedium: AppTextStyles.h2,
+        displaySmall: AppTextStyles.h3,
+        headlineMedium: AppTextStyles.h4,
+        headlineSmall: AppTextStyles.h5,
+        bodyLarge: AppTextStyles.bodyLarge,
+        bodyMedium: AppTextStyles.bodyMedium,
+        bodySmall: AppTextStyles.bodySmall,
+        labelLarge: AppTextStyles.buttonLarge,
+        labelMedium: AppTextStyles.buttonMedium,
+        labelSmall: AppTextStyles.buttonSmall,
+      ),
+
       cardTheme: CardTheme(
-        elevation: 1,
+        elevation: AppDimensions.cardElevation,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: colorScheme.outlineVariant, width: 0.5),
+          borderRadius: BorderRadius.circular(AppDimensions.cardBorderRadius),
         ),
-         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-         clipBehavior: Clip.antiAlias,
       ),
-       listTileTheme: ListTileThemeData(
-         iconColor: colorScheme.primary,
-       ),
-       inputDecorationTheme: InputDecorationTheme(
-         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-         filled: true,
-         fillColor: colorScheme.surfaceContainerHighest, // Adjust as needed
-         contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-       ),
-       filledButtonTheme: FilledButtonThemeData(
-         style: FilledButton.styleFrom(
-           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-         ),
-       ),
+
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.inputFieldBorderRadius),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.md,
+          vertical: AppDimensions.sm,
+        ),
+      ),
+
+      extensions: [
+        PropertyThemeExtension(
+          availableColor: AppColors.available,
+          rentedColor: AppColors.rented,
+          maleOnlyColor: AppColors.maleOnly,
+          femaleOnlyColor: AppColors.femaleOnly,
+          familyOnlyColor: AppColors.familyOnly,
+          priceStyle: AppTextStyles.price,
+          addressStyle: AppTextStyles.bodyMedium,
+          propertyTypeStyle: AppTextStyles.h5,
+          amenityLabelStyle: AppTextStyles.label,
+        ),
+        AuthThemeExtension(
+          titleStyle: AppTextStyles.h2,
+          subtitleStyle: AppTextStyles.bodyLarge,
+          inputLabelStyle: AppTextStyles.formLabel,
+          forgotPasswordStyle: AppTextStyles.link,
+          orDividerStyle: AppTextStyles.bodySmall,
+          socialButtonBackground: AppColors.surface,
+          formBackground: AppColors.background,
+        ),
+      ],
     );
   }
 
-  // --- Dark Theme ---
-  static ThemeData get darkTheme {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: _seedColor,
-      brightness: Brightness.dark, // Important: Set brightness to dark
-    );
-
-    final textTheme = _buildTextTheme(baseTextTheme: GoogleFonts.sourceSans3TextTheme(ThemeData.dark().textTheme), colorScheme: colorScheme);
-
-
+  static ThemeData dark() {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: colorScheme,
-      textTheme: textTheme,
-      // Add dark theme specific customizations or overrides
-      appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.surface, // Or surfaceContainerHighest etc.
-        foregroundColor: colorScheme.onSurface,
-        elevation: 0,
-         titleTextStyle: textTheme.titleLarge,
+      brightness: Brightness.dark,
+      primaryColor: AppColors.primaryLight,
+      scaffoldBackgroundColor: const Color(0xFF121212),
+      cardColor: const Color(0xFF1E1E1E),
+      dividerColor: const Color(0xFF2C2C2C),
+      
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.primaryLight,
+        secondary: AppColors.secondaryLight,
+        surface: Color(0xFF1E1E1E),
+        background: Color(0xFF121212),
+        error: AppColors.error,
       ),
-      cardTheme: CardTheme(
-        elevation: 1,
-         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-           side: BorderSide(color: colorScheme.outlineVariant, width: 0.5),
-        ),
-         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-         clipBehavior: Clip.antiAlias,
-      ),
-       listTileTheme: ListTileThemeData(
-         iconColor: colorScheme.primary,
-       ),
-      inputDecorationTheme: InputDecorationTheme(
-         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-         filled: true,
-         fillColor: colorScheme.surfaceContainerHighest, // Adjust as needed
-         contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-       ),
-        filledButtonTheme: FilledButtonThemeData(
-         style: FilledButton.styleFrom(
-           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
-           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-         ),
-       ),
-    );
-  }
 
-  // --- Text Theme Builder ---
-  // Allows applying consistent color from ColorScheme to GoogleFonts
-   static TextTheme _buildTextTheme({required TextTheme baseTextTheme, required ColorScheme colorScheme}) {
-    return baseTextTheme.copyWith(
-      displayLarge: baseTextTheme.displayLarge?.copyWith(color: colorScheme.onSurface),
-      displayMedium: baseTextTheme.displayMedium?.copyWith(color: colorScheme.onSurface),
-      displaySmall: baseTextTheme.displaySmall?.copyWith(color: colorScheme.onSurface),
-      headlineLarge: baseTextTheme.headlineLarge?.copyWith(color: colorScheme.onSurface),
-      headlineMedium: baseTextTheme.headlineMedium?.copyWith(color: colorScheme.onSurface),
-      headlineSmall: baseTextTheme.headlineSmall?.copyWith(color: colorScheme.onSurface),
-      titleLarge: baseTextTheme.titleLarge?.copyWith(color: colorScheme.onSurface),
-      titleMedium: baseTextTheme.titleMedium?.copyWith(color: colorScheme.onSurface),
-      titleSmall: baseTextTheme.titleSmall?.copyWith(color: colorScheme.onSurface),
-      bodyLarge: baseTextTheme.bodyLarge?.copyWith(color: colorScheme.onSurface),
-      bodyMedium: baseTextTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
-      bodySmall: baseTextTheme.bodySmall?.copyWith(color: colorScheme.onSurface),
-      labelLarge: baseTextTheme.labelLarge?.copyWith(color: colorScheme.onSurface),
-      labelMedium: baseTextTheme.labelMedium?.copyWith(color: colorScheme.onSurface), // Used for buttons by default
-      labelSmall: baseTextTheme.labelSmall?.copyWith(color: colorScheme.onSurface),
-    ).apply(
-      bodyColor: colorScheme.onSurface,
-      displayColor: colorScheme.onSurface,
+      textTheme: TextTheme(
+        displayLarge: AppTextStyles.h1.copyWith(color: Colors.white),
+        displayMedium: AppTextStyles.h2.copyWith(color: Colors.white),
+        displaySmall: AppTextStyles.h3.copyWith(color: Colors.white),
+        headlineMedium: AppTextStyles.h4.copyWith(color: Colors.white),
+        headlineSmall: AppTextStyles.h5.copyWith(color: Colors.white),
+        bodyLarge: AppTextStyles.bodyLarge.copyWith(color: Colors.white70),
+        bodyMedium: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
+        bodySmall: AppTextStyles.bodySmall.copyWith(color: Colors.white60),
+        labelLarge: AppTextStyles.buttonLarge,
+        labelMedium: AppTextStyles.buttonMedium,
+        labelSmall: AppTextStyles.buttonSmall,
+      ),
+
+      cardTheme: CardTheme(
+        elevation: AppDimensions.cardElevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.cardBorderRadius),
+        ),
+      ),
+
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.inputFieldBorderRadius),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.md,
+          vertical: AppDimensions.sm,
+        ),
+      ),
+
+      extensions: [
+        PropertyThemeExtension(
+          availableColor: AppColors.available,
+          rentedColor: AppColors.rented,
+          maleOnlyColor: AppColors.maleOnly,
+          femaleOnlyColor: AppColors.femaleOnly,
+          familyOnlyColor: AppColors.familyOnly,
+          priceStyle: AppTextStyles.price.copyWith(color: AppColors.primaryLight),
+          addressStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
+          propertyTypeStyle: AppTextStyles.h5.copyWith(color: Colors.white),
+          amenityLabelStyle: AppTextStyles.label.copyWith(color: Colors.white70),
+        ),
+        AuthThemeExtension(
+          titleStyle: AppTextStyles.h2.copyWith(color: Colors.white),
+          subtitleStyle: AppTextStyles.bodyLarge.copyWith(color: Colors.white70),
+          inputLabelStyle: AppTextStyles.formLabel.copyWith(color: Colors.white70),
+          forgotPasswordStyle: AppTextStyles.link.copyWith(color: AppColors.primaryLight),
+          orDividerStyle: AppTextStyles.bodySmall.copyWith(color: Colors.white60),
+          socialButtonBackground: const Color(0xFF2C2C2C),
+          formBackground: const Color(0xFF1E1E1E),
+        ),
+      ],
     );
   }
 }

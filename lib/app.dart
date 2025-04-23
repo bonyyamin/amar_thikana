@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
-import 'core/router/app_router.dart';
+import 'presentation/screens/navigation/router/app_router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,16 +8,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Amar Thikana', // Your app name
-      debugShowCheckedModeBanner: false, // Disable debug banner
-
+      title: 'Amar Thikana',
+      debugShowCheckedModeBanner: false,
       // --- Theme Configuration ---
-      themeMode: ThemeMode.system, // Use system theme (light/dark)
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      theme: AppTheme.light(),  // Fixed: using light() method
+      darkTheme: AppTheme.dark(), // Fixed: using dark() method
 
       // --- Router Configuration ---
       routerConfig: AppRouter.router,
+      builder: (context, child) {
+        return child!;
+      },
     );
   }
 }
