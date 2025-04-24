@@ -1,21 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'auth_notifier.dart';
+import 'auth_state.dart';
 
-// Provides the raw FirebaseAuth instance
+// Core providers
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
 });
 
-// Provides a stream of the authentication state changes
-final authStateChangesProvider = StreamProvider<User?>((ref) {
-  // Watch the FirebaseAuth instance provider
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
-  // Return the authStateChanges stream
-  return firebaseAuth.authStateChanges();
+// Auth state providers
+final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((
+  ref,
+) {
+  return AuthNotifier();
 });
 
-// Optional: Provider to just get the current user (useful for one-off checks)
+final authStateChangesProvider = StreamProvider<User?>((ref) {
+  return ref.watch(firebaseAuthProvider).authStateChanges();
+});
+
 final currentUserProvider = Provider<User?>((ref) {
-  final firebaseAuth = ref.watch(firebaseAuthProvider);
-  return firebaseAuth.currentUser;
+  return ref.watch(firebaseAuthProvider).currentUser;
 });

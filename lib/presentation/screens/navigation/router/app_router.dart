@@ -1,12 +1,11 @@
+import 'package:amar_thikana/presentation/screens/auth/login/login_screen.dart';
+import 'package:amar_thikana/presentation/screens/auth/register/signup_screen.dart';
+import 'package:amar_thikana/presentation/screens/auth/forgot_password/forgot_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../screens/splash/splash_screen.dart';
 import '../../../screens/onboarding/onboarding_screen.dart';
 import 'route_names.dart';
-
-// Import placeholder screens later
-// import '../../features/home/presentation/screens/home_screen.dart';
-// import '../../features/auth/presentation/screens/login_screen.dart';
 
 // Simple placeholder screen for now
 class PlaceholderScreen extends StatelessWidget {
@@ -36,14 +35,23 @@ class AppRouter {
         builder: (context, state) => const OnboardingScreen(),
       ),
       GoRoute(
+        path: RouteNames.login,
+        builder:
+            (context, state) =>
+                const LoginScreen(), // Placeholder for Login Screen
+      ),
+      GoRoute(
+        path: RouteNames.signUp,
+        builder: (context, state) => const SignupScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.forgotPassword,
+        builder: (context, state) => const ForgotPasswordScreen(),
+      ),
+      GoRoute(
         path: RouteNames.home,
         builder:
             (context, state) => const PlaceholderScreen(title: 'Home Screen'),
-      ),
-      GoRoute(
-        path: RouteNames.login,
-        builder:
-            (context, state) => const PlaceholderScreen(title: 'Login Screen'),
       ),
     ],
   );

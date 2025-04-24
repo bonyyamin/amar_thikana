@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary color palette
-  static const Color primary = Color(0xFF2C5282); // Deep blue
+  static const Color primary = Color(0xFF192F59); // Deep blue
   static const Color primaryLight = Color(0xFF4299E1); // Lighter blue
   static const Color primaryDark = Color(0xFF1A365D); // Darker blue
 
@@ -59,7 +59,7 @@ class AppColors {
   ); // Green for family accommodations
 
   // Map colors
-  static const Color mapMarker = Color(0xFF2C5282); // Blue for map markers
+  static const Color mapMarker = Color(0xFF192F59); // Blue for map markers
   static const Color mapSelected = Color(
     0xFFED8936,
   ); // Orange for selected map marker

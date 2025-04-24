@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'widgets/login_form.dart';
-import 'widgets/login_header.dart';
-import 'widgets/login_footer.dart';
+import 'widgets/signup_header.dart';
+import 'widgets/signup_form.dart';
+import 'widgets/signup_footer.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +15,11 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: const [
-              LoginHeader(),
-              SizedBox(height: 40),
-              LoginForm(),
-              SizedBox(height: 40),
-              LoginFooter(),
+              SignupHeader(),
+              SizedBox(height: 30),
+              SignupForm(),
+              SizedBox(height: 30),
+              SignupFooter(),
             ],
           ),
         ),

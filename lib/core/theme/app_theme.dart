@@ -13,12 +13,11 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.background,
       cardColor: AppColors.cardBackground,
       dividerColor: AppColors.divider,
-      
+
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         secondary: AppColors.secondary,
         surface: AppColors.surface,
-        background: AppColors.background,
         error: AppColors.error,
       ),
 
@@ -45,7 +44,9 @@ class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.inputFieldBorderRadius),
+          borderRadius: BorderRadius.circular(
+            AppDimensions.inputFieldBorderRadius,
+          ),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppDimensions.md,
@@ -86,12 +87,11 @@ class AppTheme {
       scaffoldBackgroundColor: const Color(0xFF121212),
       cardColor: const Color(0xFF1E1E1E),
       dividerColor: const Color(0xFF2C2C2C),
-      
+
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryLight,
         secondary: AppColors.secondaryLight,
         surface: Color(0xFF1E1E1E),
-        background: Color(0xFF121212),
         error: AppColors.error,
       ),
 
@@ -118,7 +118,9 @@ class AppTheme {
 
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimensions.inputFieldBorderRadius),
+          borderRadius: BorderRadius.circular(
+            AppDimensions.inputFieldBorderRadius,
+          ),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppDimensions.md,
@@ -133,17 +135,31 @@ class AppTheme {
           maleOnlyColor: AppColors.maleOnly,
           femaleOnlyColor: AppColors.femaleOnly,
           familyOnlyColor: AppColors.familyOnly,
-          priceStyle: AppTextStyles.price.copyWith(color: AppColors.primaryLight),
-          addressStyle: AppTextStyles.bodyMedium.copyWith(color: Colors.white70),
+          priceStyle: AppTextStyles.price.copyWith(
+            color: AppColors.primaryLight,
+          ),
+          addressStyle: AppTextStyles.bodyMedium.copyWith(
+            color: Colors.white70,
+          ),
           propertyTypeStyle: AppTextStyles.h5.copyWith(color: Colors.white),
-          amenityLabelStyle: AppTextStyles.label.copyWith(color: Colors.white70),
+          amenityLabelStyle: AppTextStyles.label.copyWith(
+            color: Colors.white70,
+          ),
         ),
         AuthThemeExtension(
           titleStyle: AppTextStyles.h2.copyWith(color: Colors.white),
-          subtitleStyle: AppTextStyles.bodyLarge.copyWith(color: Colors.white70),
-          inputLabelStyle: AppTextStyles.formLabel.copyWith(color: Colors.white70),
-          forgotPasswordStyle: AppTextStyles.link.copyWith(color: AppColors.primaryLight),
-          orDividerStyle: AppTextStyles.bodySmall.copyWith(color: Colors.white60),
+          subtitleStyle: AppTextStyles.bodyLarge.copyWith(
+            color: Colors.white70,
+          ),
+          inputLabelStyle: AppTextStyles.formLabel.copyWith(
+            color: Colors.white70,
+          ),
+          forgotPasswordStyle: AppTextStyles.link.copyWith(
+            color: AppColors.primaryLight,
+          ),
+          orDividerStyle: AppTextStyles.bodySmall.copyWith(
+            color: Colors.white60,
+          ),
           socialButtonBackground: const Color(0xFF2C2C2C),
           formBackground: const Color(0xFF1E1E1E),
         ),
