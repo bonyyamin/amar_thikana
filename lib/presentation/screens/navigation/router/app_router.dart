@@ -1,6 +1,8 @@
 import 'package:amar_thikana/presentation/screens/auth/login/login_screen.dart';
 import 'package:amar_thikana/presentation/screens/auth/register/signup_screen.dart';
 import 'package:amar_thikana/presentation/screens/auth/forgot_password/forgot_password_screen.dart';
+import 'package:amar_thikana/presentation/screens/navigation/navigation_bar/renter_navigation_bar.dart';
+import 'package:amar_thikana/presentation/screens/renter/home/renter_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../screens/splash/splash_screen.dart';
@@ -49,9 +51,12 @@ class AppRouter {
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
-        path: RouteNames.home,
-        builder:
-            (context, state) => const PlaceholderScreen(title: 'Home Screen'),
+        path: RouteNames.renterNavigation,
+        builder: (context, state) => const RenterNavigationBar(),
+      ),
+      GoRoute(
+        path: RouteNames.renterHome,
+        builder: (context, state) => const RenterHomeScreen(),
       ),
     ],
   );

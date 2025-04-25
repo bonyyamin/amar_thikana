@@ -1,3 +1,4 @@
+import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
 import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -105,9 +106,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               // --- Send Reset Link Button ---
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
-                  : ElevatedButton(
+                  : PrimaryButton(
+                    text: "Send Reset Link",
                     onPressed: _sendResetLink,
-                    child: const Text("Send Reset Link"),
                   ),
             ],
           ),

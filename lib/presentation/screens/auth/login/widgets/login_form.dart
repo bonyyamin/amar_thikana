@@ -1,3 +1,4 @@
+import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
 import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -81,24 +82,28 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 (value) =>
                     value == null || value.isEmpty ? 'Enter password' : null,
           ),
-          const SizedBox(height: 10),
+
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () => context.go(RouteNames.forgotPassword),
               child: Text(
                 "Forgot Password?",
-                style: authTheme.forgotPasswordStyle,
+                style: authTheme.forgotPasswordStyle.copyWith(
+                  color: authTheme.forgotPasswordColor,
+                  decoration: TextDecoration.underline,
+                  decorationColor: authTheme.forgotPasswordColor,
+                  decorationThickness: 1,
+                  height: 1.5,
+                ),
               ),
             ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 15),
           state.isLoading
               ? const CircularLoader()
-              : ElevatedButton(
-                onPressed: _onLoginPressed,
-                child: const Text("Login"),
-              ),
+              : PrimaryButton(text: "Login", onPressed: _onLoginPressed),
+          const SizedBox(height: 20),
         ],
       ),
     );

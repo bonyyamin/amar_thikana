@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // Primary color palette
   static const Color primary = Color(0xFF192F59); // Deep blue
-  static const Color primaryLight = Color(0xFF4299E1); // Lighter blue
+  static const Color primaryLight = Color(0xFF5078E1); // Lighter blue
   static const Color primaryDark = Color(0xFF1A365D); // Darker blue
 
   // Secondary color palette
@@ -33,7 +33,7 @@ class AppColors {
   static const Color info = Color(0xFF4299E1); // Blue
 
   // Other UI colors
-  static const Color divider = Color(0xFFE2E8F0); // Very light gray
+  static const Color divider = Color(0xFFEFF2FC); // Very light gray
   static const Color disabled = Color(0xFFE2E8F0); // Light gray
   static const Color shadow = Color(0x1A000000); // Black with 10% opacity
 

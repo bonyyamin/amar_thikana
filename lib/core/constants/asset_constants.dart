@@ -4,7 +4,7 @@ class AssetConstants {
   static const String _icons = 'assets/icons';
 
   // Images
-  static const String logo = '$_images/logo.png';
+  static const String logo = 'assets/logo_light.png';
   static const String authBackground = '$_images/auth_background.png';
 
   // Icons

@@ -74,6 +74,8 @@ class AppTheme {
           orDividerStyle: AppTextStyles.bodySmall,
           socialButtonBackground: AppColors.surface,
           formBackground: AppColors.background,
+          forgotPasswordColor: const Color(0xFFE53E3E),
+          signUpColor: const Color(0xFFE53E3E),
         ),
       ],
     );
@@ -154,14 +156,14 @@ class AppTheme {
           inputLabelStyle: AppTextStyles.formLabel.copyWith(
             color: Colors.white70,
           ),
-          forgotPasswordStyle: AppTextStyles.link.copyWith(
-            color: AppColors.primaryLight,
-          ),
+          forgotPasswordStyle: AppTextStyles.link,
           orDividerStyle: AppTextStyles.bodySmall.copyWith(
             color: Colors.white60,
           ),
           socialButtonBackground: const Color(0xFF2C2C2C),
           formBackground: const Color(0xFF1E1E1E),
+          forgotPasswordColor: const Color(0xFFE53E3E),
+          signUpColor: const Color(0xFFE53E3E),
         ),
       ],
     );

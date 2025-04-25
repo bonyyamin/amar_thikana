@@ -1,5 +1,5 @@
 import 'package:amar_thikana/core/theme/theme_extension.dart';
-import 'package:amar_thikana/presentation/screens/auth/login/widgets/social_login_buttons.dart';
+import 'package:amar_thikana/presentation/common_widgets/buttons/circle_social_login_buttons.dart';
 import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +24,7 @@ class SignupFooter extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 30),
-        const SocialLoginButtons(),
+        const CircleSocialLoginButtons(),
         const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

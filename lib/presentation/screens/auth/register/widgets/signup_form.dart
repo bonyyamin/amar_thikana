@@ -1,3 +1,4 @@
+import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
 import 'package:amar_thikana/presentation/common_widgets/loaders/circular_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,7 +48,10 @@ class _SignupFormState extends ConsumerState<SignupForm> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result.message), backgroundColor: Colors.green),
+          SnackBar(
+            content: Text(result.message),
+            backgroundColor: Colors.green,
+          ),
         );
         Navigator.pushReplacementNamed(context, '/login');
       }
@@ -68,7 +72,8 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               labelText: "Full Name",
               prefixIcon: Icon(Icons.person_outline),
             ),
-            validator: (val) => val == null || val.isEmpty ? 'Enter your name' : null,
+            validator:
+                (val) => val == null || val.isEmpty ? 'Enter your name' : null,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -77,7 +82,11 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               labelText: "Email Address",
               prefixIcon: Icon(Icons.alternate_email),
             ),
-            validator: (val) => val == null || !val.contains('@') ? 'Enter a valid email' : null,
+            validator:
+                (val) =>
+                    val == null || !val.contains('@')
+                        ? 'Enter a valid email'
+                        : null,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -87,11 +96,17 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               labelText: "Password",
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
-                icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
+                icon: Icon(
+                  _showPassword ? Icons.visibility_off : Icons.visibility,
+                ),
                 onPressed: () => setState(() => _showPassword = !_showPassword),
               ),
             ),
-            validator: (val) => val != null && val.length >= 6 ? null : 'Minimum 6 characters',
+            validator:
+                (val) =>
+                    val != null && val.length >= 6
+                        ? null
+                        : 'Minimum 6 characters',
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -101,11 +116,22 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               labelText: "Confirm Password",
               prefixIcon: const Icon(Icons.lock_outline),
               suffixIcon: IconButton(
-                icon: Icon(_showConfirmPassword ? Icons.visibility_off : Icons.visibility),
-                onPressed: () => setState(() => _showConfirmPassword = !_showConfirmPassword),
+                icon: Icon(
+                  _showConfirmPassword
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                ),
+                onPressed:
+                    () => setState(
+                      () => _showConfirmPassword = !_showConfirmPassword,
+                    ),
               ),
             ),
-            validator: (val) => val == _passwordController.text ? null : 'Passwords do not match',
+            validator:
+                (val) =>
+                    val == _passwordController.text
+                        ? null
+                        : 'Passwords do not match',
           ),
           const SizedBox(height: 20),
           UserTypeSelector(
@@ -115,7 +141,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
           const SizedBox(height: 30),
           authState.isLoading
               ? const CircularLoader()
-              : ElevatedButton(onPressed: _onSignupPressed, child: const Text("Sign Up")),
+              : PrimaryButton(text: "Sign Up", onPressed: _onSignupPressed),
         ],
       ),
     );

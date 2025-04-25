@@ -1,8 +1,9 @@
+import 'package:amar_thikana/presentation/common_widgets/buttons/horizontal_social_login_button.dart';
+import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
 import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/theme/theme_extension.dart';
-import 'social_login_buttons.dart';
 
 class LoginFooter extends StatelessWidget {
   const LoginFooter({super.key});
@@ -23,8 +24,8 @@ class LoginFooter extends StatelessWidget {
             Expanded(child: Divider(color: Colors.grey[300])),
           ],
         ),
-        const SizedBox(height: 30),
-        const SocialLoginButtons(),
+        const SizedBox(height: 15),
+        const HorizontalSocialLoginButton(),
         const SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,14 +35,21 @@ class LoginFooter extends StatelessWidget {
               onPressed: () => context.go(RouteNames.signUp),
               child: Text(
                 "Sign Up",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold,
+                style: authTheme.subtitleStyle.copyWith(
+                  color: authTheme.signUpColor,
                 ),
               ),
             ),
           ],
         ),
+        const SizedBox(height: 30),
+        PrimaryButton(
+          text: "Continue as Guest",
+          onPressed: () => context.go(RouteNames.renterNavigation),
+          backgroundColor: authTheme.signUpColor,
+          textColor: Colors.white,
+        ),
+        const SizedBox(height: 30),
       ],
     );
   }

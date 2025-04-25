@@ -84,6 +84,8 @@ class AuthThemeExtension extends ThemeExtension<AuthThemeExtension> {
   final TextStyle orDividerStyle;
   final Color socialButtonBackground;
   final Color formBackground;
+  final Color forgotPasswordColor;
+  final Color signUpColor;
 
   AuthThemeExtension({
     required this.titleStyle,
@@ -93,6 +95,8 @@ class AuthThemeExtension extends ThemeExtension<AuthThemeExtension> {
     required this.orDividerStyle,
     required this.socialButtonBackground,
     required this.formBackground,
+    required this.forgotPasswordColor,
+    required this.signUpColor,
   });
 
   @override
@@ -104,6 +108,8 @@ class AuthThemeExtension extends ThemeExtension<AuthThemeExtension> {
     TextStyle? orDividerStyle,
     Color? socialButtonBackground,
     Color? formBackground,
+    Color? forgotPasswordColor,
+    Color? signUpColor,
   }) {
     return AuthThemeExtension(
       titleStyle: titleStyle ?? this.titleStyle,
@@ -114,6 +120,8 @@ class AuthThemeExtension extends ThemeExtension<AuthThemeExtension> {
       socialButtonBackground:
           socialButtonBackground ?? this.socialButtonBackground,
       formBackground: formBackground ?? this.formBackground,
+      forgotPasswordColor: forgotPasswordColor ?? this.forgotPasswordColor,
+      signUpColor: signUpColor ?? this.signUpColor,
     );
   }
 
@@ -136,6 +144,9 @@ class AuthThemeExtension extends ThemeExtension<AuthThemeExtension> {
       socialButtonBackground:
           Color.lerp(socialButtonBackground, other.socialButtonBackground, t)!,
       formBackground: Color.lerp(formBackground, other.formBackground, t)!,
+      forgotPasswordColor:
+          Color.lerp(forgotPasswordColor, other.forgotPasswordColor, t)!,
+      signUpColor: Color.lerp(signUpColor, other.signUpColor, t)!,
     );
   }
 }
