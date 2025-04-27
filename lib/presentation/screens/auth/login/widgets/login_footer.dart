@@ -44,12 +44,18 @@ class LoginFooter extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         PrimaryButton(
-          text: "Continue as Guest",
+          text: "Continue as Guest (Renter)",
           onPressed: () => context.go(RouteNames.renterNavigation),
           backgroundColor: authTheme.signUpColor,
           textColor: Colors.white,
         ),
         const SizedBox(height: 30),
+        PrimaryButton(
+          text: "Continue as Guest (LandLord)",
+          onPressed: () => context.go(RouteNames.landlordNavigation),
+          backgroundColor: authTheme.signUpColor,
+          textColor: Colors.white,
+        ),
       ],
     );
   }

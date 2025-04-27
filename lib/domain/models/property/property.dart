@@ -11,13 +11,19 @@ class Property with _$Property {
     String? description,
     String? coverImage,
     Location? location,
-    double? pricePerMonth,
+    required double pricePerMonth,
     double? rating,
     int? reviewsCount,
     int? bedrooms,
     int? bathrooms,
     int? parkingSpaces,
-    PropertyType? type,
+    required PropertyType type,
+    required List<String> amenities,
+    required List<String> rules,
+    required List<String> photos,
+    required String ownerId,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _Property;
 
   factory Property.fromJson(Map<String, dynamic> json) =>

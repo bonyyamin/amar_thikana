@@ -8,8 +8,12 @@ class RouteNames {
   static const String renterNavigation = '/renter-navigation';
   static const String renterHome = '/renter-home';
 
-
   static const String landlordNavigation = '/landlord-navigation';
   static const String landlordHome = '/landlord-home';
   static const String landlordPropertyDetails = '/landlord-property-details';
+
+  static const String addProperty = '/add-property';
+  static const String editProperty = '/edit-property';
+  static const String myListings = '/my-listings';
+  static const String propertyPreview = '/property-preview';
 }

@@ -2,6 +2,7 @@ import 'package:amar_thikana/application/providers/property/properties_provider.
 import 'package:amar_thikana/core/theme/app_colors.dart';
 import 'package:amar_thikana/core/theme/app_text_styles.dart';
 import 'package:amar_thikana/presentation/screens/renter/home/widgets/featured_properties.dart';
+import 'package:amar_thikana/presentation/screens/renter/home/widgets/filter_search.dart';
 import 'package:amar_thikana/presentation/screens/renter/home/widgets/header.dart';
 import 'package:amar_thikana/presentation/screens/renter/home/widgets/home_heading_text.dart';
 import 'package:amar_thikana/presentation/screens/renter/home/widgets/property_type_filters.dart';
@@ -153,7 +154,16 @@ class _SearchBar extends StatelessWidget {
               icon: const Icon(Icons.tune),
               color: AppColors.primaryLight,
               onPressed: () {
-                // Handle filter action
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  builder: (context) => const FilterSearch(),
+                );
               },
             ),
           ),

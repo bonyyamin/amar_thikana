@@ -1,6 +1,11 @@
 import 'package:amar_thikana/presentation/screens/auth/login/login_screen.dart';
 import 'package:amar_thikana/presentation/screens/auth/register/signup_screen.dart';
 import 'package:amar_thikana/presentation/screens/auth/forgot_password/forgot_password_screen.dart';
+import 'package:amar_thikana/presentation/screens/landlord/dashboard/landlord_home_screen.dart';
+import 'package:amar_thikana/presentation/screens/landlord/listings/my_listings_screen.dart';
+import 'package:amar_thikana/presentation/screens/landlord/property_form/add_property_screen.dart';
+import 'package:amar_thikana/presentation/screens/landlord/property_form/edit_property_screen.dart';
+import 'package:amar_thikana/presentation/screens/navigation/navigation_bar/landlord_navigation_bar.dart';
 import 'package:amar_thikana/presentation/screens/navigation/navigation_bar/renter_navigation_bar.dart';
 import 'package:amar_thikana/presentation/screens/renter/home/renter_home_screen.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +62,29 @@ class AppRouter {
       GoRoute(
         path: RouteNames.renterHome,
         builder: (context, state) => const RenterHomeScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.landlordNavigation,
+        builder: (context, state) => const LandlordNavigationBar(),
+      ),
+      GoRoute(
+        path: RouteNames.landlordHome,
+        builder: (context, state) => const LandlordHomeScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.addProperty,
+        builder: (context, state) => const PropertyForm(),
+      ),
+      GoRoute(
+        path: RouteNames.editProperty,
+        builder: (context, state) {
+          final propertyId = state.pathParameters['id'] ?? '';
+          return EditPropertyScreen(propertyId: propertyId);
+        },
+      ),
+      GoRoute(
+        path: RouteNames.myListings,
+        builder: (context, state) => const MyListingsScreen(),
       ),
     ],
   );

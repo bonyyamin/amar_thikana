@@ -16,13 +16,21 @@ _$PropertyImpl _$$PropertyImplFromJson(Map<String, dynamic> json) =>
           json['location'] == null
               ? null
               : Location.fromJson(json['location'] as Map<String, dynamic>),
-      pricePerMonth: (json['pricePerMonth'] as num?)?.toDouble(),
+      pricePerMonth: (json['pricePerMonth'] as num).toDouble(),
       rating: (json['rating'] as num?)?.toDouble(),
       reviewsCount: (json['reviewsCount'] as num?)?.toInt(),
       bedrooms: (json['bedrooms'] as num?)?.toInt(),
       bathrooms: (json['bathrooms'] as num?)?.toInt(),
       parkingSpaces: (json['parkingSpaces'] as num?)?.toInt(),
-      type: $enumDecodeNullable(_$PropertyTypeEnumMap, json['type']),
+      type: $enumDecode(_$PropertyTypeEnumMap, json['type']),
+      amenities:
+          (json['amenities'] as List<dynamic>).map((e) => e as String).toList(),
+      rules: (json['rules'] as List<dynamic>).map((e) => e as String).toList(),
+      photos:
+          (json['photos'] as List<dynamic>).map((e) => e as String).toList(),
+      ownerId: json['ownerId'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$$PropertyImplToJson(_$PropertyImpl instance) =>
@@ -38,7 +46,13 @@ Map<String, dynamic> _$$PropertyImplToJson(_$PropertyImpl instance) =>
       'bedrooms': instance.bedrooms,
       'bathrooms': instance.bathrooms,
       'parkingSpaces': instance.parkingSpaces,
-      'type': _$PropertyTypeEnumMap[instance.type],
+      'type': _$PropertyTypeEnumMap[instance.type]!,
+      'amenities': instance.amenities,
+      'rules': instance.rules,
+      'photos': instance.photos,
+      'ownerId': instance.ownerId,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };
 
 const _$PropertyTypeEnumMap = {

@@ -1,22 +1,28 @@
+import 'package:amar_thikana/application/providers/review_providers.dart';
 import 'package:amar_thikana/core/theme/app_colors.dart';
 import 'package:amar_thikana/core/theme/app_text_styles.dart';
 import 'package:amar_thikana/domain/models/property/property.dart';
 import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
+import 'package:amar_thikana/presentation/screens/renter/property_details/widgets/owner_info.dart';
+import 'package:amar_thikana/presentation/screens/renter/property_details/widgets/property_details_appbar.dart';
+import 'package:amar_thikana/presentation/screens/renter/property_details/widgets/property_header.dart';
+import 'package:amar_thikana/presentation/screens/renter/property_details/widgets/property_reviews_section.dart';
 import 'package:flutter/material.dart';
-import 'package:dots_indicator/dots_indicator.dart'; // Add this package to pubspec.yaml
+import 'package:amar_thikana/domain/models/review/review.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PropertyDetailsScreen extends StatefulWidget {
+class PropertyDetailsScreen extends ConsumerStatefulWidget {
   final Property property;
 
   const PropertyDetailsScreen({super.key, required this.property});
 
   @override
-  State<PropertyDetailsScreen> createState() => _PropertyDetailsScreenState();
+  ConsumerState<PropertyDetailsScreen> createState() =>
+      _PropertyDetailsScreenState();
 }
 
-class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
+class _PropertyDetailsScreenState extends ConsumerState<PropertyDetailsScreen> {
   final PageController _pageController = PageController();
-  int _currentPage = 0;
 
   final List<String> _demoImages = [
     'https://picsum.photos/400/300?random=1',
@@ -24,6 +30,78 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     'https://picsum.photos/400/300?random=3',
     'https://picsum.photos/400/300?random=4',
   ];
+
+  Future<void> _seedReviews() async {
+    final repository = ref.read(reviewRepositoryProvider);
+    final reviews = [
+      Review(
+        id: 'demo1',
+        userId: 'user1',
+        propertyId: widget.property.id,
+        userName: 'John Doe',
+        rating: 4.5,
+        createdAt: DateTime.now().subtract(const Duration(days: 5)),
+        comment:
+            'Great location and very clean property. The owner was very helpful and responsive. Would definitely recommend!',
+        userImage: 'https://picsum.photos/200?random=1',
+      ),
+      Review(
+        id: 'demo2',
+        userId: 'user2',
+        propertyId: widget.property.id,
+        userName: 'Jane Smith',
+        rating: 5.0,
+        createdAt: DateTime.now().subtract(const Duration(days: 10)),
+        comment:
+            'Perfect accommodation for students. Close to university and shopping areas. The facilities are well maintained.',
+        userImage: 'https://picsum.photos/200?random=2',
+      ),
+      Review(
+        id: 'demo3',
+        userId: 'user3',
+        propertyId: widget.property.id,
+        userName: 'Mike Johnson',
+        rating: 4.0,
+        createdAt: DateTime.now().subtract(const Duration(days: 15)),
+        comment:
+            'Good value for money. Could use some minor maintenance but overall a comfortable stay.',
+        userImage: 'https://picsum.photos/200?random=3',
+      ),
+      Review(
+        id: 'demo4',
+        userId: 'user4',
+        propertyId: widget.property.id,
+        userName: 'Sarah Wilson',
+        rating: 3.5,
+        createdAt: DateTime.now().subtract(const Duration(days: 20)),
+        comment:
+            'Nice neighborhood but the internet connection was a bit slow. The owner promised to upgrade it soon.',
+        userImage: 'https://picsum.photos/200?random=4',
+      ),
+      Review(
+        id: 'demo5',
+        userId: 'user5',
+        propertyId: widget.property.id,
+        userName: 'David Chen',
+        rating: 4.8,
+        createdAt: DateTime.now().subtract(const Duration(days: 25)),
+        comment:
+            'Exceptional cleanliness and modern amenities. The security system gives great peace of mind.',
+        userImage: 'https://picsum.photos/200?random=5',
+      ),
+    ];
+
+    for (final review in reviews) {
+      await repository.addReview(review);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Uncomment the following line to seed reviews (use only once)
+    _seedReviews();
+  }
 
   @override
   void dispose() {
@@ -34,22 +112,28 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const PropertyDetailsAppBar(),
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(context),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
+                  PropertyHeader(
+                    property: widget.property,
+                    pageController: _pageController,
+                    images: _demoImages,
+                  ),
                   const SizedBox(height: 24),
                   _buildDescription(),
                   const SizedBox(height: 24),
                   _buildAmenities(),
                   const SizedBox(height: 24),
-                  _buildOwnerInfo(),
+                  OwnerInfo(),
+                  const SizedBox(height: 24),
+                  PropertyReviewsSection(propertyId: widget.property.id),
                   const SizedBox(height: 100), // Space for bottom button
                 ],
               ),
@@ -61,118 +145,12 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    return SliverAppBar(
-      pinned: true,
-      backgroundColor: Colors.white,
-      elevation: 1,
-      title: Text(
-        'Property Details',
-        style: AppTextStyles.h5.copyWith(color: Colors.black),
-      ),
-      centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.favorite_border, color: Colors.black),
-          onPressed: () {
-            // TODO: Implement favorite functionality
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.share, color: Colors.black),
-          onPressed: () {
-            // TODO: Implement share functionality
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Stack(
-            children: [
-              AspectRatio(
-                aspectRatio: 16 / 9,
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
-                  },
-                  itemCount: _demoImages.length,
-                  itemBuilder: (context, index) {
-                    return Image.network(_demoImages[index], fit: BoxFit.cover);
-                  },
-                ),
-              ),
-              Positioned(
-                bottom: 12,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: DotsIndicator(
-                    dotsCount: _demoImages.length,
-                    position: _currentPage,
-                    decorator: DotsDecorator(
-                      color: Colors.grey[400]!,
-                      activeColor: AppColors.primary,
-                      size: const Size(8, 8),
-                      activeSize: const Size(8, 8),
-                      spacing: const EdgeInsets.all(4),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          widget.property.title,
-          style: AppTextStyles.h4.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(width: 8),
-        Row(
-          children: [
-            const Icon(Icons.location_on, size: 16, color: AppColors.primary),
-            const SizedBox(width: 4),
-            Text(
-              '${widget.property.location?.city}, ${widget.property.location?.state}',
-              style: AppTextStyles.bodyMedium.copyWith(color: Colors.grey[600]),
-            ),
-            const SizedBox(width: 8),
-            const Icon(Icons.star, color: Colors.amber, size: 20),
-            const SizedBox(width: 4),
-            Text(
-              '${widget.property.rating} (${widget.property.reviewsCount})',
-              style: AppTextStyles.bodyMedium,
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '৳${widget.property.pricePerMonth}/mo',
-          style: AppTextStyles.h3.copyWith(
-            color: AppColors.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildDescription() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Description',
+          'Description:',
           style: AppTextStyles.h5.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
@@ -221,46 +199,6 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
         const SizedBox(height: 8),
         Text(text, style: AppTextStyles.bodyMedium),
       ],
-    );
-  }
-
-  Widget _buildOwnerInfo() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundColor: Colors.grey[200],
-            child: const Icon(Icons.person, size: 32, color: Colors.grey),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('John Smith Doe', style: AppTextStyles.h5),
-                Text(
-                  'Property Owner',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.message_outlined, color: AppColors.primary),
-            onPressed: () {
-              // TODO: Implement message functionality
-            },
-          ),
-        ],
-      ),
     );
   }
 

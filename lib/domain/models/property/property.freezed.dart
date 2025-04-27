@@ -26,13 +26,19 @@ mixin _$Property {
   String? get description => throw _privateConstructorUsedError;
   String? get coverImage => throw _privateConstructorUsedError;
   Location? get location => throw _privateConstructorUsedError;
-  double? get pricePerMonth => throw _privateConstructorUsedError;
+  double get pricePerMonth => throw _privateConstructorUsedError;
   double? get rating => throw _privateConstructorUsedError;
   int? get reviewsCount => throw _privateConstructorUsedError;
   int? get bedrooms => throw _privateConstructorUsedError;
   int? get bathrooms => throw _privateConstructorUsedError;
   int? get parkingSpaces => throw _privateConstructorUsedError;
-  PropertyType? get type => throw _privateConstructorUsedError;
+  PropertyType get type => throw _privateConstructorUsedError;
+  List<String> get amenities => throw _privateConstructorUsedError;
+  List<String> get rules => throw _privateConstructorUsedError;
+  List<String> get photos => throw _privateConstructorUsedError;
+  String get ownerId => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this Property to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -55,13 +61,19 @@ abstract class $PropertyCopyWith<$Res> {
     String? description,
     String? coverImage,
     Location? location,
-    double? pricePerMonth,
+    double pricePerMonth,
     double? rating,
     int? reviewsCount,
     int? bedrooms,
     int? bathrooms,
     int? parkingSpaces,
-    PropertyType? type,
+    PropertyType type,
+    List<String> amenities,
+    List<String> rules,
+    List<String> photos,
+    String ownerId,
+    DateTime createdAt,
+    DateTime updatedAt,
   });
 
   $LocationCopyWith<$Res>? get location;
@@ -87,13 +99,19 @@ class _$PropertyCopyWithImpl<$Res, $Val extends Property>
     Object? description = freezed,
     Object? coverImage = freezed,
     Object? location = freezed,
-    Object? pricePerMonth = freezed,
+    Object? pricePerMonth = null,
     Object? rating = freezed,
     Object? reviewsCount = freezed,
     Object? bedrooms = freezed,
     Object? bathrooms = freezed,
     Object? parkingSpaces = freezed,
-    Object? type = freezed,
+    Object? type = null,
+    Object? amenities = null,
+    Object? rules = null,
+    Object? photos = null,
+    Object? ownerId = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
   }) {
     return _then(
       _value.copyWith(
@@ -123,10 +141,10 @@ class _$PropertyCopyWithImpl<$Res, $Val extends Property>
                     : location // ignore: cast_nullable_to_non_nullable
                         as Location?,
             pricePerMonth:
-                freezed == pricePerMonth
+                null == pricePerMonth
                     ? _value.pricePerMonth
                     : pricePerMonth // ignore: cast_nullable_to_non_nullable
-                        as double?,
+                        as double,
             rating:
                 freezed == rating
                     ? _value.rating
@@ -153,10 +171,40 @@ class _$PropertyCopyWithImpl<$Res, $Val extends Property>
                     : parkingSpaces // ignore: cast_nullable_to_non_nullable
                         as int?,
             type:
-                freezed == type
+                null == type
                     ? _value.type
                     : type // ignore: cast_nullable_to_non_nullable
-                        as PropertyType?,
+                        as PropertyType,
+            amenities:
+                null == amenities
+                    ? _value.amenities
+                    : amenities // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            rules:
+                null == rules
+                    ? _value.rules
+                    : rules // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            photos:
+                null == photos
+                    ? _value.photos
+                    : photos // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            ownerId:
+                null == ownerId
+                    ? _value.ownerId
+                    : ownerId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            createdAt:
+                null == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            updatedAt:
+                null == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
           )
           as $Val,
     );
@@ -192,13 +240,19 @@ abstract class _$$PropertyImplCopyWith<$Res>
     String? description,
     String? coverImage,
     Location? location,
-    double? pricePerMonth,
+    double pricePerMonth,
     double? rating,
     int? reviewsCount,
     int? bedrooms,
     int? bathrooms,
     int? parkingSpaces,
-    PropertyType? type,
+    PropertyType type,
+    List<String> amenities,
+    List<String> rules,
+    List<String> photos,
+    String ownerId,
+    DateTime createdAt,
+    DateTime updatedAt,
   });
 
   @override
@@ -224,13 +278,19 @@ class __$$PropertyImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? coverImage = freezed,
     Object? location = freezed,
-    Object? pricePerMonth = freezed,
+    Object? pricePerMonth = null,
     Object? rating = freezed,
     Object? reviewsCount = freezed,
     Object? bedrooms = freezed,
     Object? bathrooms = freezed,
     Object? parkingSpaces = freezed,
-    Object? type = freezed,
+    Object? type = null,
+    Object? amenities = null,
+    Object? rules = null,
+    Object? photos = null,
+    Object? ownerId = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
   }) {
     return _then(
       _$PropertyImpl(
@@ -260,10 +320,10 @@ class __$$PropertyImplCopyWithImpl<$Res>
                 : location // ignore: cast_nullable_to_non_nullable
                     as Location?,
         pricePerMonth:
-            freezed == pricePerMonth
+            null == pricePerMonth
                 ? _value.pricePerMonth
                 : pricePerMonth // ignore: cast_nullable_to_non_nullable
-                    as double?,
+                    as double,
         rating:
             freezed == rating
                 ? _value.rating
@@ -290,10 +350,40 @@ class __$$PropertyImplCopyWithImpl<$Res>
                 : parkingSpaces // ignore: cast_nullable_to_non_nullable
                     as int?,
         type:
-            freezed == type
+            null == type
                 ? _value.type
                 : type // ignore: cast_nullable_to_non_nullable
-                    as PropertyType?,
+                    as PropertyType,
+        amenities:
+            null == amenities
+                ? _value._amenities
+                : amenities // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        rules:
+            null == rules
+                ? _value._rules
+                : rules // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        photos:
+            null == photos
+                ? _value._photos
+                : photos // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        ownerId:
+            null == ownerId
+                ? _value.ownerId
+                : ownerId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        createdAt:
+            null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        updatedAt:
+            null == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
       ),
     );
   }
@@ -308,14 +398,22 @@ class _$PropertyImpl implements _Property {
     this.description,
     this.coverImage,
     this.location,
-    this.pricePerMonth,
+    required this.pricePerMonth,
     this.rating,
     this.reviewsCount,
     this.bedrooms,
     this.bathrooms,
     this.parkingSpaces,
-    this.type,
-  });
+    required this.type,
+    required final List<String> amenities,
+    required final List<String> rules,
+    required final List<String> photos,
+    required this.ownerId,
+    required this.createdAt,
+    required this.updatedAt,
+  }) : _amenities = amenities,
+       _rules = rules,
+       _photos = photos;
 
   factory _$PropertyImpl.fromJson(Map<String, dynamic> json) =>
       _$$PropertyImplFromJson(json);
@@ -331,7 +429,7 @@ class _$PropertyImpl implements _Property {
   @override
   final Location? location;
   @override
-  final double? pricePerMonth;
+  final double pricePerMonth;
   @override
   final double? rating;
   @override
@@ -343,11 +441,41 @@ class _$PropertyImpl implements _Property {
   @override
   final int? parkingSpaces;
   @override
-  final PropertyType? type;
+  final PropertyType type;
+  final List<String> _amenities;
+  @override
+  List<String> get amenities {
+    if (_amenities is EqualUnmodifiableListView) return _amenities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_amenities);
+  }
+
+  final List<String> _rules;
+  @override
+  List<String> get rules {
+    if (_rules is EqualUnmodifiableListView) return _rules;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rules);
+  }
+
+  final List<String> _photos;
+  @override
+  List<String> get photos {
+    if (_photos is EqualUnmodifiableListView) return _photos;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_photos);
+  }
+
+  @override
+  final String ownerId;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'Property(id: $id, title: $title, description: $description, coverImage: $coverImage, location: $location, pricePerMonth: $pricePerMonth, rating: $rating, reviewsCount: $reviewsCount, bedrooms: $bedrooms, bathrooms: $bathrooms, parkingSpaces: $parkingSpaces, type: $type)';
+    return 'Property(id: $id, title: $title, description: $description, coverImage: $coverImage, location: $location, pricePerMonth: $pricePerMonth, rating: $rating, reviewsCount: $reviewsCount, bedrooms: $bedrooms, bathrooms: $bathrooms, parkingSpaces: $parkingSpaces, type: $type, amenities: $amenities, rules: $rules, photos: $photos, ownerId: $ownerId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -374,7 +502,18 @@ class _$PropertyImpl implements _Property {
                 other.bathrooms == bathrooms) &&
             (identical(other.parkingSpaces, parkingSpaces) ||
                 other.parkingSpaces == parkingSpaces) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality().equals(
+              other._amenities,
+              _amenities,
+            ) &&
+            const DeepCollectionEquality().equals(other._rules, _rules) &&
+            const DeepCollectionEquality().equals(other._photos, _photos) &&
+            (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -393,6 +532,12 @@ class _$PropertyImpl implements _Property {
     bathrooms,
     parkingSpaces,
     type,
+    const DeepCollectionEquality().hash(_amenities),
+    const DeepCollectionEquality().hash(_rules),
+    const DeepCollectionEquality().hash(_photos),
+    ownerId,
+    createdAt,
+    updatedAt,
   );
 
   /// Create a copy of Property
@@ -416,13 +561,19 @@ abstract class _Property implements Property {
     final String? description,
     final String? coverImage,
     final Location? location,
-    final double? pricePerMonth,
+    required final double pricePerMonth,
     final double? rating,
     final int? reviewsCount,
     final int? bedrooms,
     final int? bathrooms,
     final int? parkingSpaces,
-    final PropertyType? type,
+    required final PropertyType type,
+    required final List<String> amenities,
+    required final List<String> rules,
+    required final List<String> photos,
+    required final String ownerId,
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
   }) = _$PropertyImpl;
 
   factory _Property.fromJson(Map<String, dynamic> json) =
@@ -439,7 +590,7 @@ abstract class _Property implements Property {
   @override
   Location? get location;
   @override
-  double? get pricePerMonth;
+  double get pricePerMonth;
   @override
   double? get rating;
   @override
@@ -451,7 +602,19 @@ abstract class _Property implements Property {
   @override
   int? get parkingSpaces;
   @override
-  PropertyType? get type;
+  PropertyType get type;
+  @override
+  List<String> get amenities;
+  @override
+  List<String> get rules;
+  @override
+  List<String> get photos;
+  @override
+  String get ownerId;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime get updatedAt;
 
   /// Create a copy of Property
   /// with the given fields replaced by the non-null parameter values.
