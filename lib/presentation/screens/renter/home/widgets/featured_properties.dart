@@ -140,7 +140,7 @@ class _PropertyCard extends StatelessWidget {
                       Text('${property.bathrooms}'),
                       const Spacer(),
                       Text(
-                        '\$${property.pricePerMonth?.toStringAsFixed(0) ?? '0'}/mo',
+                        '\$${property.pricePerMonth.toStringAsFixed(0)}/mo',
                         style: AppTextStyles.bodyLarge.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,

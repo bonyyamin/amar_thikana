@@ -22,11 +22,19 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Message {
   String get id => throw _privateConstructorUsedError;
+  String get conversationId => throw _privateConstructorUsedError;
   String get senderId => throw _privateConstructorUsedError;
-  String get receiverId => throw _privateConstructorUsedError;
+  String get senderName => throw _privateConstructorUsedError;
+  String? get senderPhotoUrl => throw _privateConstructorUsedError;
+  MessageType get type => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  List<String>? get imageUrls => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get locationData => throw _privateConstructorUsedError;
+  String? get propertyId => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
-  bool get isMe => throw _privateConstructorUsedError;
+  Map<String, bool> get readStatus =>
+      throw _privateConstructorUsedError; // Map of user IDs to read status
+  List<String>? get recipients => throw _privateConstructorUsedError;
 
   /// Serializes this Message to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,11 +52,18 @@ abstract class $MessageCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
+    String conversationId,
     String senderId,
-    String receiverId,
+    String senderName,
+    String? senderPhotoUrl,
+    MessageType type,
     String content,
+    List<String>? imageUrls,
+    Map<String, dynamic>? locationData,
+    String? propertyId,
     DateTime timestamp,
-    bool isMe,
+    Map<String, bool> readStatus,
+    List<String>? recipients,
   });
 }
 
@@ -68,11 +83,18 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
   @override
   $Res call({
     Object? id = null,
+    Object? conversationId = null,
     Object? senderId = null,
-    Object? receiverId = null,
+    Object? senderName = null,
+    Object? senderPhotoUrl = freezed,
+    Object? type = null,
     Object? content = null,
+    Object? imageUrls = freezed,
+    Object? locationData = freezed,
+    Object? propertyId = freezed,
     Object? timestamp = null,
-    Object? isMe = null,
+    Object? readStatus = null,
+    Object? recipients = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -81,31 +103,66 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
                     ? _value.id
                     : id // ignore: cast_nullable_to_non_nullable
                         as String,
+            conversationId:
+                null == conversationId
+                    ? _value.conversationId
+                    : conversationId // ignore: cast_nullable_to_non_nullable
+                        as String,
             senderId:
                 null == senderId
                     ? _value.senderId
                     : senderId // ignore: cast_nullable_to_non_nullable
                         as String,
-            receiverId:
-                null == receiverId
-                    ? _value.receiverId
-                    : receiverId // ignore: cast_nullable_to_non_nullable
+            senderName:
+                null == senderName
+                    ? _value.senderName
+                    : senderName // ignore: cast_nullable_to_non_nullable
                         as String,
+            senderPhotoUrl:
+                freezed == senderPhotoUrl
+                    ? _value.senderPhotoUrl
+                    : senderPhotoUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as MessageType,
             content:
                 null == content
                     ? _value.content
                     : content // ignore: cast_nullable_to_non_nullable
                         as String,
+            imageUrls:
+                freezed == imageUrls
+                    ? _value.imageUrls
+                    : imageUrls // ignore: cast_nullable_to_non_nullable
+                        as List<String>?,
+            locationData:
+                freezed == locationData
+                    ? _value.locationData
+                    : locationData // ignore: cast_nullable_to_non_nullable
+                        as Map<String, dynamic>?,
+            propertyId:
+                freezed == propertyId
+                    ? _value.propertyId
+                    : propertyId // ignore: cast_nullable_to_non_nullable
+                        as String?,
             timestamp:
                 null == timestamp
                     ? _value.timestamp
                     : timestamp // ignore: cast_nullable_to_non_nullable
                         as DateTime,
-            isMe:
-                null == isMe
-                    ? _value.isMe
-                    : isMe // ignore: cast_nullable_to_non_nullable
-                        as bool,
+            readStatus:
+                null == readStatus
+                    ? _value.readStatus
+                    : readStatus // ignore: cast_nullable_to_non_nullable
+                        as Map<String, bool>,
+            recipients:
+                freezed == recipients
+                    ? _value.recipients
+                    : recipients // ignore: cast_nullable_to_non_nullable
+                        as List<String>?,
           )
           as $Val,
     );
@@ -122,11 +179,18 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
+    String conversationId,
     String senderId,
-    String receiverId,
+    String senderName,
+    String? senderPhotoUrl,
+    MessageType type,
     String content,
+    List<String>? imageUrls,
+    Map<String, dynamic>? locationData,
+    String? propertyId,
     DateTime timestamp,
-    bool isMe,
+    Map<String, bool> readStatus,
+    List<String>? recipients,
   });
 }
 
@@ -145,11 +209,18 @@ class __$$MessageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? conversationId = null,
     Object? senderId = null,
-    Object? receiverId = null,
+    Object? senderName = null,
+    Object? senderPhotoUrl = freezed,
+    Object? type = null,
     Object? content = null,
+    Object? imageUrls = freezed,
+    Object? locationData = freezed,
+    Object? propertyId = freezed,
     Object? timestamp = null,
-    Object? isMe = null,
+    Object? readStatus = null,
+    Object? recipients = freezed,
   }) {
     return _then(
       _$MessageImpl(
@@ -158,31 +229,66 @@ class __$$MessageImplCopyWithImpl<$Res>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                     as String,
+        conversationId:
+            null == conversationId
+                ? _value.conversationId
+                : conversationId // ignore: cast_nullable_to_non_nullable
+                    as String,
         senderId:
             null == senderId
                 ? _value.senderId
                 : senderId // ignore: cast_nullable_to_non_nullable
                     as String,
-        receiverId:
-            null == receiverId
-                ? _value.receiverId
-                : receiverId // ignore: cast_nullable_to_non_nullable
+        senderName:
+            null == senderName
+                ? _value.senderName
+                : senderName // ignore: cast_nullable_to_non_nullable
                     as String,
+        senderPhotoUrl:
+            freezed == senderPhotoUrl
+                ? _value.senderPhotoUrl
+                : senderPhotoUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as MessageType,
         content:
             null == content
                 ? _value.content
                 : content // ignore: cast_nullable_to_non_nullable
                     as String,
+        imageUrls:
+            freezed == imageUrls
+                ? _value._imageUrls
+                : imageUrls // ignore: cast_nullable_to_non_nullable
+                    as List<String>?,
+        locationData:
+            freezed == locationData
+                ? _value._locationData
+                : locationData // ignore: cast_nullable_to_non_nullable
+                    as Map<String, dynamic>?,
+        propertyId:
+            freezed == propertyId
+                ? _value.propertyId
+                : propertyId // ignore: cast_nullable_to_non_nullable
+                    as String?,
         timestamp:
             null == timestamp
                 ? _value.timestamp
                 : timestamp // ignore: cast_nullable_to_non_nullable
                     as DateTime,
-        isMe:
-            null == isMe
-                ? _value.isMe
-                : isMe // ignore: cast_nullable_to_non_nullable
-                    as bool,
+        readStatus:
+            null == readStatus
+                ? _value._readStatus
+                : readStatus // ignore: cast_nullable_to_non_nullable
+                    as Map<String, bool>,
+        recipients:
+            freezed == recipients
+                ? _value._recipients
+                : recipients // ignore: cast_nullable_to_non_nullable
+                    as List<String>?,
       ),
     );
   }
@@ -193,12 +299,22 @@ class __$$MessageImplCopyWithImpl<$Res>
 class _$MessageImpl implements _Message {
   const _$MessageImpl({
     required this.id,
+    required this.conversationId,
     required this.senderId,
-    required this.receiverId,
+    required this.senderName,
+    this.senderPhotoUrl,
+    required this.type,
     required this.content,
+    final List<String>? imageUrls,
+    final Map<String, dynamic>? locationData,
+    this.propertyId,
     required this.timestamp,
-    required this.isMe,
-  });
+    required final Map<String, bool> readStatus,
+    final List<String>? recipients,
+  }) : _imageUrls = imageUrls,
+       _locationData = locationData,
+       _readStatus = readStatus,
+       _recipients = recipients;
 
   factory _$MessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageImplFromJson(json);
@@ -206,19 +322,64 @@ class _$MessageImpl implements _Message {
   @override
   final String id;
   @override
+  final String conversationId;
+  @override
   final String senderId;
   @override
-  final String receiverId;
+  final String senderName;
+  @override
+  final String? senderPhotoUrl;
+  @override
+  final MessageType type;
   @override
   final String content;
+  final List<String>? _imageUrls;
+  @override
+  List<String>? get imageUrls {
+    final value = _imageUrls;
+    if (value == null) return null;
+    if (_imageUrls is EqualUnmodifiableListView) return _imageUrls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final Map<String, dynamic>? _locationData;
+  @override
+  Map<String, dynamic>? get locationData {
+    final value = _locationData;
+    if (value == null) return null;
+    if (_locationData is EqualUnmodifiableMapView) return _locationData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  final String? propertyId;
   @override
   final DateTime timestamp;
+  final Map<String, bool> _readStatus;
   @override
-  final bool isMe;
+  Map<String, bool> get readStatus {
+    if (_readStatus is EqualUnmodifiableMapView) return _readStatus;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_readStatus);
+  }
+
+  // Map of user IDs to read status
+  final List<String>? _recipients;
+  // Map of user IDs to read status
+  @override
+  List<String>? get recipients {
+    final value = _recipients;
+    if (value == null) return null;
+    if (_recipients is EqualUnmodifiableListView) return _recipients;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Message(id: $id, senderId: $senderId, receiverId: $receiverId, content: $content, timestamp: $timestamp, isMe: $isMe)';
+    return 'Message(id: $id, conversationId: $conversationId, senderId: $senderId, senderName: $senderName, senderPhotoUrl: $senderPhotoUrl, type: $type, content: $content, imageUrls: $imageUrls, locationData: $locationData, propertyId: $propertyId, timestamp: $timestamp, readStatus: $readStatus, recipients: $recipients)';
   }
 
   @override
@@ -227,14 +388,36 @@ class _$MessageImpl implements _Message {
         (other.runtimeType == runtimeType &&
             other is _$MessageImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.conversationId, conversationId) ||
+                other.conversationId == conversationId) &&
             (identical(other.senderId, senderId) ||
                 other.senderId == senderId) &&
-            (identical(other.receiverId, receiverId) ||
-                other.receiverId == receiverId) &&
+            (identical(other.senderName, senderName) ||
+                other.senderName == senderName) &&
+            (identical(other.senderPhotoUrl, senderPhotoUrl) ||
+                other.senderPhotoUrl == senderPhotoUrl) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.content, content) || other.content == content) &&
+            const DeepCollectionEquality().equals(
+              other._imageUrls,
+              _imageUrls,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._locationData,
+              _locationData,
+            ) &&
+            (identical(other.propertyId, propertyId) ||
+                other.propertyId == propertyId) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
-            (identical(other.isMe, isMe) || other.isMe == isMe));
+            const DeepCollectionEquality().equals(
+              other._readStatus,
+              _readStatus,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._recipients,
+              _recipients,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -242,11 +425,18 @@ class _$MessageImpl implements _Message {
   int get hashCode => Object.hash(
     runtimeType,
     id,
+    conversationId,
     senderId,
-    receiverId,
+    senderName,
+    senderPhotoUrl,
+    type,
     content,
+    const DeepCollectionEquality().hash(_imageUrls),
+    const DeepCollectionEquality().hash(_locationData),
+    propertyId,
     timestamp,
-    isMe,
+    const DeepCollectionEquality().hash(_readStatus),
+    const DeepCollectionEquality().hash(_recipients),
   );
 
   /// Create a copy of Message
@@ -266,11 +456,18 @@ class _$MessageImpl implements _Message {
 abstract class _Message implements Message {
   const factory _Message({
     required final String id,
+    required final String conversationId,
     required final String senderId,
-    required final String receiverId,
+    required final String senderName,
+    final String? senderPhotoUrl,
+    required final MessageType type,
     required final String content,
+    final List<String>? imageUrls,
+    final Map<String, dynamic>? locationData,
+    final String? propertyId,
     required final DateTime timestamp,
-    required final bool isMe,
+    required final Map<String, bool> readStatus,
+    final List<String>? recipients,
   }) = _$MessageImpl;
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$MessageImpl.fromJson;
@@ -278,15 +475,29 @@ abstract class _Message implements Message {
   @override
   String get id;
   @override
+  String get conversationId;
+  @override
   String get senderId;
   @override
-  String get receiverId;
+  String get senderName;
+  @override
+  String? get senderPhotoUrl;
+  @override
+  MessageType get type;
   @override
   String get content;
   @override
+  List<String>? get imageUrls;
+  @override
+  Map<String, dynamic>? get locationData;
+  @override
+  String? get propertyId;
+  @override
   DateTime get timestamp;
   @override
-  bool get isMe;
+  Map<String, bool> get readStatus; // Map of user IDs to read status
+  @override
+  List<String>? get recipients;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.

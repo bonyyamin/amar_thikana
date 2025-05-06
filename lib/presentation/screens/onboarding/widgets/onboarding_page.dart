@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 import 'package:amar_thikana/core/theme/app_colors.dart';
 
 class OnboardingPage {
@@ -19,10 +18,10 @@ class OnboardingPageWidget extends StatelessWidget {
   final int currentPage;
 
   const OnboardingPageWidget({
-    Key? key,
+    super.key,
     required this.page,
     required this.currentPage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

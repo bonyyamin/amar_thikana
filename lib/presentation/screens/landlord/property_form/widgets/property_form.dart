@@ -1,5 +1,7 @@
 import 'package:amar_thikana/application/providers/property/properties_notifier.dart';
 import 'package:amar_thikana/application/providers/property/property_submission_provider.dart';
+import 'package:amar_thikana/domain/models/location/address.dart';
+import 'package:amar_thikana/domain/models/location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amar_thikana/application/providers/property/property_form_provider.dart';
@@ -116,6 +118,15 @@ class _PropertyFormWidgetState extends ConsumerState<PropertyFormWidget> {
         city: formState.location ?? 'Dhaka',
         state: 'Dhaka',
         country: 'Bangladesh',
+        latitude: 12,
+        longitude: 12, address: Address(
+          street: 'Street 1',
+          area: 'Area 1',
+          city: 'Dhaka',
+          postalCode: '1212',
+          country: 'Bangladesh',
+        ),
+        landmark: 'Landmark 1',
       );
 
       final property = Property(

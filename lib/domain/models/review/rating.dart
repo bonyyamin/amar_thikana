@@ -10,7 +10,7 @@ class Rating with _$Rating {
     required String id,
     required String userId,
     required String itemId,
-    @JsonKey(name: 'value') required double rating,
+    required double rating,
     @Default('property') String type,
     required DateTime createdAt,
     String? comment,

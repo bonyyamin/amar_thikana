@@ -3,12 +3,13 @@ import 'package:amar_thikana/domain/models/chat/message.dart';
 
 class MessageBubble extends StatelessWidget {
   final Message message;
+  final String currentUserId; // Pass the current user's ID
 
-  const MessageBubble({super.key, required this.message});
+  const MessageBubble({super.key, required this.message, required this.currentUserId});
 
   @override
   Widget build(BuildContext context) {
-    final isMe = message.isMe;
+    final bool isMe = message.senderId == currentUserId; // Check if sender is the current user
 
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,

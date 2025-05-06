@@ -1,3 +1,5 @@
+import 'package:amar_thikana/domain/models/location/address.dart';
+import 'package:amar_thikana/domain/models/location/location.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amar_thikana/domain/models/property/property.dart';
 import 'package:amar_thikana/application/providers/property/properties_state.dart';
@@ -29,6 +31,7 @@ class PropertyListNotifier extends StateNotifier<AsyncValue<List<Property>>> {
           ownerId: 'owner123',
           createdAt: now,
           updatedAt: now,
+          location: null,
         ),
         // Add more mock properties as needed
       ];
@@ -123,6 +126,15 @@ class PropertiesNotifier extends StateNotifier<PropertiesState> {
             city: 'Stockton',
             state: 'New Hampshire',
             country: 'USA',
+            latitude: 12,
+            longitude: 12,
+            address: Address(
+              street: 'street',
+              area: 'area',
+              city: 'city',
+              postalCode: 'postalCode',
+              country: 'country',
+            ),
           ),
           pricePerMonth: 1495,
           rating: 4.8,
@@ -150,6 +162,15 @@ class PropertiesNotifier extends StateNotifier<PropertiesState> {
             city: 'Los Angeles',
             state: 'California',
             country: 'USA',
+            latitude: 12,
+            longitude: 12,
+            address: Address(
+              street: 'street',
+              area: 'area',
+              city: 'city',
+              postalCode: 'postalCode',
+              country: 'country',
+            ),
           ),
           pricePerMonth: 2499,
           rating: 4.7,

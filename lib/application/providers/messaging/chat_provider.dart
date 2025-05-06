@@ -26,14 +26,17 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
   }
 
-  Future<void> sendMessage(String content) async {
+  Future<void> sendMessage(String content, String currentUserId, List<String> recipients) async {
     final message = Message(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      senderId: '200', // Assume current user ID
-      receiverId: '101', // Assume receiver
+      conversationId: conversationId,
+      senderId: currentUserId, // Use actual current user ID
+      senderName: 'User $currentUserId', // Placeholder for user name, should be fetched properly
+      type: MessageType.text,
       content: content,
       timestamp: DateTime.now(),
-      isMe: true,
+      readStatus: {for (var recipient in recipients) recipient: false}, // Initialize unread status
+      recipients: recipients, // Send to multiple recipients
     );
 
     await repository.sendMessage(conversationId, message);

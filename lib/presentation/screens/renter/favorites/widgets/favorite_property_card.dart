@@ -10,11 +10,11 @@ class FavoritePropertyCard extends StatelessWidget {
   final VoidCallback? onCall;
 
   const FavoritePropertyCard({
-    Key? key,
+    super.key,
     required this.property,
     this.onDelete,
     this.onCall,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class FavoritePropertyCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Color.fromRGBO(0, 0, 0, 0.08),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -136,7 +136,7 @@ class FavoritePropertyCard extends StatelessWidget {
                           Text('${property.bathrooms}'),
                           const Spacer(),
                           Text(
-                            '\৳${property.pricePerMonth?.toStringAsFixed(0) ?? '0'}/mo',
+                            '৳${property.pricePerMonth.toStringAsFixed(0)}/mo',
                             style: AppTextStyles.bodyLarge.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amar_thikana/data/repositories/chat_repository.dart';
-import 'package:amar_thikana/domain/models/chat/conversation.dart';
 import 'package:amar_thikana/application/providers/messaging/conversations_state.dart';
 
 final chatRepositoryProvider = Provider((ref) => ChatRepository());

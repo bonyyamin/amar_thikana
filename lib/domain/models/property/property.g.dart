@@ -31,6 +31,9 @@ _$PropertyImpl _$$PropertyImplFromJson(Map<String, dynamic> json) =>
       ownerId: json['ownerId'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
+      utilities: (json['utilities'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as bool),
+      ),
     );
 
 Map<String, dynamic> _$$PropertyImplToJson(_$PropertyImpl instance) =>
@@ -53,6 +56,7 @@ Map<String, dynamic> _$$PropertyImplToJson(_$PropertyImpl instance) =>
       'ownerId': instance.ownerId,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'utilities': instance.utilities,
     };
 
 const _$PropertyTypeEnumMap = {
@@ -61,17 +65,3 @@ const _$PropertyTypeEnumMap = {
   PropertyType.house: 'house',
   PropertyType.apartment: 'apartment',
 };
-
-_$LocationImpl _$$LocationImplFromJson(Map<String, dynamic> json) =>
-    _$LocationImpl(
-      city: json['city'] as String,
-      state: json['state'] as String,
-      country: json['country'] as String,
-    );
-
-Map<String, dynamic> _$$LocationImplToJson(_$LocationImpl instance) =>
-    <String, dynamic>{
-      'city': instance.city,
-      'state': instance.state,
-      'country': instance.country,
-    };

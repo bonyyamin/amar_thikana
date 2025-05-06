@@ -1,5 +1,4 @@
 import 'package:amar_thikana/core/theme/app_colors.dart';
-import 'package:amar_thikana/presentation/screens/landlord/property_form/add_property_screen.dart';
 import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

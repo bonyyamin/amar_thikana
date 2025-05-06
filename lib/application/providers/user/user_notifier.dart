@@ -9,11 +9,13 @@ class UserNotifier extends StateNotifier<UserState> {
 
   Future<void> loadUser() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    const user = User(
+    final user = User(
       id: '1',
       name: 'Darrell Steward',
       email: 'darrellstrd@gamil.com',
-      profileImage: 'https://via.placeholder.com/150',
+      userType: UserType.renter, // Provide a valid UserType
+      isVerified: false, // Provide a boolean value
+      createdAt: DateTime.now(), // Provide current timestamp
     );
     state = UserState.loaded(user);
   }

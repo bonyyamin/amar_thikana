@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../location/location.dart';
 
 part 'property.freezed.dart';
 part 'property.g.dart';
@@ -10,7 +11,7 @@ class Property with _$Property {
     required String title,
     String? description,
     String? coverImage,
-    Location? location,
+    required Location? location,
     required double pricePerMonth,
     double? rating,
     int? reviewsCount,
@@ -24,22 +25,11 @@ class Property with _$Property {
     required String ownerId,
     required DateTime createdAt,
     required DateTime updatedAt,
+    Map<String, bool>? utilities,
   }) = _Property;
 
   factory Property.fromJson(Map<String, dynamic> json) =>
       _$PropertyFromJson(json);
-}
-
-@freezed
-class Location with _$Location {
-  const factory Location({
-    required String city,
-    required String state,
-    required String country,
-  }) = _Location;
-
-  factory Location.fromJson(Map<String, dynamic> json) =>
-      _$LocationFromJson(json);
 }
 
 enum PropertyType {

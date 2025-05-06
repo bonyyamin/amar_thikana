@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amar_thikana/application/providers/property/property_form_provider.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class PhotoUploader extends ConsumerWidget {
   const PhotoUploader({super.key});
@@ -28,10 +30,21 @@ class PhotoUploader extends ConsumerWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.all(8),
             children: [
-              // Add Photo Button
               InkWell(
                 onTap: () async {
-                  // TODO: Implement image picker
+                  final ImagePicker picker = ImagePicker();
+                  final XFile? image = await picker.pickImage(
+                    source: ImageSource.gallery,
+                    imageQuality: 80,
+                  );
+                  
+                  if (image != null && context.mounted) {
+                    // TODO: Upload image to storage and get URL
+                    formNotifier.updatePhotos([
+                      ...formState.photos,
+                      image.path,
+                    ]);
+                  }
                 },
                 child: Container(
                   width: 100,
@@ -50,9 +63,8 @@ class PhotoUploader extends ConsumerWidget {
                   ),
                 ),
               ),
-              // Photo Preview List
               ...formState.photos.map(
-                (photo) => _buildPhotoPreview(photo, formNotifier),
+                (photo) => _buildPhotoPreview(photo, formState.photos, formNotifier),
               ),
             ],
           ),
@@ -61,7 +73,11 @@ class PhotoUploader extends ConsumerWidget {
     );
   }
 
-  Widget _buildPhotoPreview(String photoUrl, PropertyFormNotifier notifier) {
+  Widget _buildPhotoPreview(
+    String photoUrl, 
+    List<String> currentPhotos,
+    PropertyFormNotifier notifier,
+  ) {
     return Stack(
       children: [
         Container(
@@ -70,7 +86,9 @@ class PhotoUploader extends ConsumerWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             image: DecorationImage(
-              image: NetworkImage(photoUrl),
+              image: photoUrl.startsWith('http') 
+                  ? NetworkImage(photoUrl)
+                  : FileImage(File(photoUrl)) as ImageProvider,
               fit: BoxFit.cover,
             ),
           ),
@@ -79,11 +97,9 @@ class PhotoUploader extends ConsumerWidget {
           top: 4,
           right: 12,
           child: InkWell(
-            onTap: () {
-              final updatedPhotos = List<String>.from(notifier.state.photos)
-                ..remove(photoUrl);
-              notifier.updatePhotos(updatedPhotos);
-            },
+            onTap: () => notifier.updatePhotos(
+              List<String>.from(currentPhotos)..remove(photoUrl)
+            ),
             child: const CircleAvatar(
               radius: 12,
               backgroundColor: Colors.black54,

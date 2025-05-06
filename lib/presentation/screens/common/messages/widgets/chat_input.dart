@@ -4,8 +4,15 @@ import 'package:amar_thikana/application/providers/messaging/chat_provider.dart'
 
 class ChatInput extends ConsumerStatefulWidget {
   final String conversationId;
+  final String currentUserId; // Pass current user's ID
+  final List<String> recipients; // Pass recipients' IDs
 
-  const ChatInput({Key? key, required this.conversationId}) : super(key: key);
+  const ChatInput({
+    super.key,
+    required this.conversationId,
+    required this.currentUserId,
+    required this.recipients,
+  });
 
   @override
   _ChatInputState createState() => _ChatInputState();
@@ -30,7 +37,11 @@ class _ChatInputState extends ConsumerState<ChatInput> {
             icon: const Icon(Icons.send),
             onPressed: () {
               if (_controller.text.trim().isNotEmpty) {
-                ref.read(chatProvider(widget.conversationId).notifier).sendMessage(_controller.text.trim());
+                ref.read(chatProvider(widget.conversationId).notifier).sendMessage(
+                  _controller.text.trim(),
+                  widget.currentUserId, // Pass current user ID
+                  widget.recipients, // Pass recipients list
+                );
                 _controller.clear();
               }
             },

@@ -39,6 +39,7 @@ mixin _$Property {
   String get ownerId => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
+  Map<String, bool>? get utilities => throw _privateConstructorUsedError;
 
   /// Serializes this Property to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -74,6 +75,7 @@ abstract class $PropertyCopyWith<$Res> {
     String ownerId,
     DateTime createdAt,
     DateTime updatedAt,
+    Map<String, bool>? utilities,
   });
 
   $LocationCopyWith<$Res>? get location;
@@ -112,6 +114,7 @@ class _$PropertyCopyWithImpl<$Res, $Val extends Property>
     Object? ownerId = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? utilities = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -205,6 +208,11 @@ class _$PropertyCopyWithImpl<$Res, $Val extends Property>
                     ? _value.updatedAt
                     : updatedAt // ignore: cast_nullable_to_non_nullable
                         as DateTime,
+            utilities:
+                freezed == utilities
+                    ? _value.utilities
+                    : utilities // ignore: cast_nullable_to_non_nullable
+                        as Map<String, bool>?,
           )
           as $Val,
     );
@@ -253,6 +261,7 @@ abstract class _$$PropertyImplCopyWith<$Res>
     String ownerId,
     DateTime createdAt,
     DateTime updatedAt,
+    Map<String, bool>? utilities,
   });
 
   @override
@@ -291,6 +300,7 @@ class __$$PropertyImplCopyWithImpl<$Res>
     Object? ownerId = null,
     Object? createdAt = null,
     Object? updatedAt = null,
+    Object? utilities = freezed,
   }) {
     return _then(
       _$PropertyImpl(
@@ -384,6 +394,11 @@ class __$$PropertyImplCopyWithImpl<$Res>
                 ? _value.updatedAt
                 : updatedAt // ignore: cast_nullable_to_non_nullable
                     as DateTime,
+        utilities:
+            freezed == utilities
+                ? _value._utilities
+                : utilities // ignore: cast_nullable_to_non_nullable
+                    as Map<String, bool>?,
       ),
     );
   }
@@ -397,7 +412,7 @@ class _$PropertyImpl implements _Property {
     required this.title,
     this.description,
     this.coverImage,
-    this.location,
+    required this.location,
     required this.pricePerMonth,
     this.rating,
     this.reviewsCount,
@@ -411,9 +426,11 @@ class _$PropertyImpl implements _Property {
     required this.ownerId,
     required this.createdAt,
     required this.updatedAt,
+    final Map<String, bool>? utilities,
   }) : _amenities = amenities,
        _rules = rules,
-       _photos = photos;
+       _photos = photos,
+       _utilities = utilities;
 
   factory _$PropertyImpl.fromJson(Map<String, dynamic> json) =>
       _$$PropertyImplFromJson(json);
@@ -472,10 +489,19 @@ class _$PropertyImpl implements _Property {
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
+  final Map<String, bool>? _utilities;
+  @override
+  Map<String, bool>? get utilities {
+    final value = _utilities;
+    if (value == null) return null;
+    if (_utilities is EqualUnmodifiableMapView) return _utilities;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
 
   @override
   String toString() {
-    return 'Property(id: $id, title: $title, description: $description, coverImage: $coverImage, location: $location, pricePerMonth: $pricePerMonth, rating: $rating, reviewsCount: $reviewsCount, bedrooms: $bedrooms, bathrooms: $bathrooms, parkingSpaces: $parkingSpaces, type: $type, amenities: $amenities, rules: $rules, photos: $photos, ownerId: $ownerId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Property(id: $id, title: $title, description: $description, coverImage: $coverImage, location: $location, pricePerMonth: $pricePerMonth, rating: $rating, reviewsCount: $reviewsCount, bedrooms: $bedrooms, bathrooms: $bathrooms, parkingSpaces: $parkingSpaces, type: $type, amenities: $amenities, rules: $rules, photos: $photos, ownerId: $ownerId, createdAt: $createdAt, updatedAt: $updatedAt, utilities: $utilities)';
   }
 
   @override
@@ -513,12 +539,16 @@ class _$PropertyImpl implements _Property {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
+                other.updatedAt == updatedAt) &&
+            const DeepCollectionEquality().equals(
+              other._utilities,
+              _utilities,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     id,
     title,
@@ -538,7 +568,8 @@ class _$PropertyImpl implements _Property {
     ownerId,
     createdAt,
     updatedAt,
-  );
+    const DeepCollectionEquality().hash(_utilities),
+  ]);
 
   /// Create a copy of Property
   /// with the given fields replaced by the non-null parameter values.
@@ -560,7 +591,7 @@ abstract class _Property implements Property {
     required final String title,
     final String? description,
     final String? coverImage,
-    final Location? location,
+    required final Location? location,
     required final double pricePerMonth,
     final double? rating,
     final int? reviewsCount,
@@ -574,6 +605,7 @@ abstract class _Property implements Property {
     required final String ownerId,
     required final DateTime createdAt,
     required final DateTime updatedAt,
+    final Map<String, bool>? utilities,
   }) = _$PropertyImpl;
 
   factory _Property.fromJson(Map<String, dynamic> json) =
@@ -615,210 +647,13 @@ abstract class _Property implements Property {
   DateTime get createdAt;
   @override
   DateTime get updatedAt;
+  @override
+  Map<String, bool>? get utilities;
 
   /// Create a copy of Property
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PropertyImplCopyWith<_$PropertyImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-Location _$LocationFromJson(Map<String, dynamic> json) {
-  return _Location.fromJson(json);
-}
-
-/// @nodoc
-mixin _$Location {
-  String get city => throw _privateConstructorUsedError;
-  String get state => throw _privateConstructorUsedError;
-  String get country => throw _privateConstructorUsedError;
-
-  /// Serializes this Location to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Location
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $LocationCopyWith<Location> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LocationCopyWith<$Res> {
-  factory $LocationCopyWith(Location value, $Res Function(Location) then) =
-      _$LocationCopyWithImpl<$Res, Location>;
-  @useResult
-  $Res call({String city, String state, String country});
-}
-
-/// @nodoc
-class _$LocationCopyWithImpl<$Res, $Val extends Location>
-    implements $LocationCopyWith<$Res> {
-  _$LocationCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Location
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? city = null,
-    Object? state = null,
-    Object? country = null,
-  }) {
-    return _then(
-      _value.copyWith(
-            city:
-                null == city
-                    ? _value.city
-                    : city // ignore: cast_nullable_to_non_nullable
-                        as String,
-            state:
-                null == state
-                    ? _value.state
-                    : state // ignore: cast_nullable_to_non_nullable
-                        as String,
-            country:
-                null == country
-                    ? _value.country
-                    : country // ignore: cast_nullable_to_non_nullable
-                        as String,
-          )
-          as $Val,
-    );
-  }
-}
-
-/// @nodoc
-abstract class _$$LocationImplCopyWith<$Res>
-    implements $LocationCopyWith<$Res> {
-  factory _$$LocationImplCopyWith(
-    _$LocationImpl value,
-    $Res Function(_$LocationImpl) then,
-  ) = __$$LocationImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String city, String state, String country});
-}
-
-/// @nodoc
-class __$$LocationImplCopyWithImpl<$Res>
-    extends _$LocationCopyWithImpl<$Res, _$LocationImpl>
-    implements _$$LocationImplCopyWith<$Res> {
-  __$$LocationImplCopyWithImpl(
-    _$LocationImpl _value,
-    $Res Function(_$LocationImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of Location
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? city = null,
-    Object? state = null,
-    Object? country = null,
-  }) {
-    return _then(
-      _$LocationImpl(
-        city:
-            null == city
-                ? _value.city
-                : city // ignore: cast_nullable_to_non_nullable
-                    as String,
-        state:
-            null == state
-                ? _value.state
-                : state // ignore: cast_nullable_to_non_nullable
-                    as String,
-        country:
-            null == country
-                ? _value.country
-                : country // ignore: cast_nullable_to_non_nullable
-                    as String,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$LocationImpl implements _Location {
-  const _$LocationImpl({
-    required this.city,
-    required this.state,
-    required this.country,
-  });
-
-  factory _$LocationImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LocationImplFromJson(json);
-
-  @override
-  final String city;
-  @override
-  final String state;
-  @override
-  final String country;
-
-  @override
-  String toString() {
-    return 'Location(city: $city, state: $state, country: $country)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LocationImpl &&
-            (identical(other.city, city) || other.city == city) &&
-            (identical(other.state, state) || other.state == state) &&
-            (identical(other.country, country) || other.country == country));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, city, state, country);
-
-  /// Create a copy of Location
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>
-      __$$LocationImplCopyWithImpl<_$LocationImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LocationImplToJson(this);
-  }
-}
-
-abstract class _Location implements Location {
-  const factory _Location({
-    required final String city,
-    required final String state,
-    required final String country,
-  }) = _$LocationImpl;
-
-  factory _Location.fromJson(Map<String, dynamic> json) =
-      _$LocationImpl.fromJson;
-
-  @override
-  String get city;
-  @override
-  String get state;
-  @override
-  String get country;
-
-  /// Create a copy of Location
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LocationImplCopyWith<_$LocationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

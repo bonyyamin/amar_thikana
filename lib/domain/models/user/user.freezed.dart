@@ -22,9 +22,19 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get profileImage => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  UserType get userType => throw _privateConstructorUsedError;
+  String? get photoUrl => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
+  Address? get address => throw _privateConstructorUsedError;
+  bool get isVerified => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get lastActive =>
+      throw _privateConstructorUsedError; // Fields specific to user types
+  // These would be null if not applicable to the user type
+  Landlord? get landlordDetails => throw _privateConstructorUsedError;
+  Renter? get renterDetails => throw _privateConstructorUsedError;
 
   /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +50,24 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String id, String name, String email, String profileImage});
+  $Res call({
+    String id,
+    String email,
+    String name,
+    UserType userType,
+    String? photoUrl,
+    String? phoneNumber,
+    Address? address,
+    bool isVerified,
+    DateTime createdAt,
+    DateTime? lastActive,
+    Landlord? landlordDetails,
+    Renter? renterDetails,
+  });
+
+  $AddressCopyWith<$Res>? get address;
+  $LandlordCopyWith<$Res>? get landlordDetails;
+  $RenterCopyWith<$Res>? get renterDetails;
 }
 
 /// @nodoc
@@ -59,9 +86,17 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
     Object? email = null,
-    Object? profileImage = null,
+    Object? name = null,
+    Object? userType = null,
+    Object? photoUrl = freezed,
+    Object? phoneNumber = freezed,
+    Object? address = freezed,
+    Object? isVerified = null,
+    Object? createdAt = null,
+    Object? lastActive = freezed,
+    Object? landlordDetails = freezed,
+    Object? renterDetails = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -70,24 +105,106 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
                     ? _value.id
                     : id // ignore: cast_nullable_to_non_nullable
                         as String,
-            name:
-                null == name
-                    ? _value.name
-                    : name // ignore: cast_nullable_to_non_nullable
-                        as String,
             email:
                 null == email
                     ? _value.email
                     : email // ignore: cast_nullable_to_non_nullable
                         as String,
-            profileImage:
-                null == profileImage
-                    ? _value.profileImage
-                    : profileImage // ignore: cast_nullable_to_non_nullable
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
                         as String,
+            userType:
+                null == userType
+                    ? _value.userType
+                    : userType // ignore: cast_nullable_to_non_nullable
+                        as UserType,
+            photoUrl:
+                freezed == photoUrl
+                    ? _value.photoUrl
+                    : photoUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phoneNumber:
+                freezed == phoneNumber
+                    ? _value.phoneNumber
+                    : phoneNumber // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            address:
+                freezed == address
+                    ? _value.address
+                    : address // ignore: cast_nullable_to_non_nullable
+                        as Address?,
+            isVerified:
+                null == isVerified
+                    ? _value.isVerified
+                    : isVerified // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            createdAt:
+                null == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            lastActive:
+                freezed == lastActive
+                    ? _value.lastActive
+                    : lastActive // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            landlordDetails:
+                freezed == landlordDetails
+                    ? _value.landlordDetails
+                    : landlordDetails // ignore: cast_nullable_to_non_nullable
+                        as Landlord?,
+            renterDetails:
+                freezed == renterDetails
+                    ? _value.renterDetails
+                    : renterDetails // ignore: cast_nullable_to_non_nullable
+                        as Renter?,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res>? get address {
+    if (_value.address == null) {
+      return null;
+    }
+
+    return $AddressCopyWith<$Res>(_value.address!, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
+    });
+  }
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $LandlordCopyWith<$Res>? get landlordDetails {
+    if (_value.landlordDetails == null) {
+      return null;
+    }
+
+    return $LandlordCopyWith<$Res>(_value.landlordDetails!, (value) {
+      return _then(_value.copyWith(landlordDetails: value) as $Val);
+    });
+  }
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RenterCopyWith<$Res>? get renterDetails {
+    if (_value.renterDetails == null) {
+      return null;
+    }
+
+    return $RenterCopyWith<$Res>(_value.renterDetails!, (value) {
+      return _then(_value.copyWith(renterDetails: value) as $Val);
+    });
   }
 }
 
@@ -99,7 +216,27 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   ) = __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String email, String profileImage});
+  $Res call({
+    String id,
+    String email,
+    String name,
+    UserType userType,
+    String? photoUrl,
+    String? phoneNumber,
+    Address? address,
+    bool isVerified,
+    DateTime createdAt,
+    DateTime? lastActive,
+    Landlord? landlordDetails,
+    Renter? renterDetails,
+  });
+
+  @override
+  $AddressCopyWith<$Res>? get address;
+  @override
+  $LandlordCopyWith<$Res>? get landlordDetails;
+  @override
+  $RenterCopyWith<$Res>? get renterDetails;
 }
 
 /// @nodoc
@@ -115,9 +252,17 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
     Object? email = null,
-    Object? profileImage = null,
+    Object? name = null,
+    Object? userType = null,
+    Object? photoUrl = freezed,
+    Object? phoneNumber = freezed,
+    Object? address = freezed,
+    Object? isVerified = null,
+    Object? createdAt = null,
+    Object? lastActive = freezed,
+    Object? landlordDetails = freezed,
+    Object? renterDetails = freezed,
   }) {
     return _then(
       _$UserImpl(
@@ -126,21 +271,61 @@ class __$$UserImplCopyWithImpl<$Res>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                     as String,
-        name:
-            null == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                    as String,
         email:
             null == email
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
                     as String,
-        profileImage:
-            null == profileImage
-                ? _value.profileImage
-                : profileImage // ignore: cast_nullable_to_non_nullable
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
                     as String,
+        userType:
+            null == userType
+                ? _value.userType
+                : userType // ignore: cast_nullable_to_non_nullable
+                    as UserType,
+        photoUrl:
+            freezed == photoUrl
+                ? _value.photoUrl
+                : photoUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phoneNumber:
+            freezed == phoneNumber
+                ? _value.phoneNumber
+                : phoneNumber // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        address:
+            freezed == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                    as Address?,
+        isVerified:
+            null == isVerified
+                ? _value.isVerified
+                : isVerified // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        createdAt:
+            null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        lastActive:
+            freezed == lastActive
+                ? _value.lastActive
+                : lastActive // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        landlordDetails:
+            freezed == landlordDetails
+                ? _value.landlordDetails
+                : landlordDetails // ignore: cast_nullable_to_non_nullable
+                    as Landlord?,
+        renterDetails:
+            freezed == renterDetails
+                ? _value.renterDetails
+                : renterDetails // ignore: cast_nullable_to_non_nullable
+                    as Renter?,
       ),
     );
   }
@@ -151,9 +336,17 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl implements _User {
   const _$UserImpl({
     required this.id,
-    required this.name,
     required this.email,
-    required this.profileImage,
+    required this.name,
+    required this.userType,
+    this.photoUrl,
+    this.phoneNumber,
+    this.address,
+    required this.isVerified,
+    required this.createdAt,
+    this.lastActive,
+    this.landlordDetails = null,
+    this.renterDetails = null,
   });
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -162,15 +355,35 @@ class _$UserImpl implements _User {
   @override
   final String id;
   @override
-  final String name;
-  @override
   final String email;
   @override
-  final String profileImage;
+  final String name;
+  @override
+  final UserType userType;
+  @override
+  final String? photoUrl;
+  @override
+  final String? phoneNumber;
+  @override
+  final Address? address;
+  @override
+  final bool isVerified;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime? lastActive;
+  // Fields specific to user types
+  // These would be null if not applicable to the user type
+  @override
+  @JsonKey()
+  final Landlord? landlordDetails;
+  @override
+  @JsonKey()
+  final Renter? renterDetails;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, profileImage: $profileImage)';
+    return 'User(id: $id, email: $email, name: $name, userType: $userType, photoUrl: $photoUrl, phoneNumber: $phoneNumber, address: $address, isVerified: $isVerified, createdAt: $createdAt, lastActive: $lastActive, landlordDetails: $landlordDetails, renterDetails: $renterDetails)';
   }
 
   @override
@@ -179,15 +392,44 @@ class _$UserImpl implements _User {
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.userType, userType) ||
+                other.userType == userType) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.address, address) || other.address == address) &&
+            (identical(other.isVerified, isVerified) ||
+                other.isVerified == isVerified) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.lastActive, lastActive) ||
+                other.lastActive == lastActive) &&
+            (identical(other.landlordDetails, landlordDetails) ||
+                other.landlordDetails == landlordDetails) &&
+            (identical(other.renterDetails, renterDetails) ||
+                other.renterDetails == renterDetails));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email, profileImage);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    email,
+    name,
+    userType,
+    photoUrl,
+    phoneNumber,
+    address,
+    isVerified,
+    createdAt,
+    lastActive,
+    landlordDetails,
+    renterDetails,
+  );
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.
@@ -206,9 +448,17 @@ class _$UserImpl implements _User {
 abstract class _User implements User {
   const factory _User({
     required final String id,
-    required final String name,
     required final String email,
-    required final String profileImage,
+    required final String name,
+    required final UserType userType,
+    final String? photoUrl,
+    final String? phoneNumber,
+    final Address? address,
+    required final bool isVerified,
+    required final DateTime createdAt,
+    final DateTime? lastActive,
+    final Landlord? landlordDetails,
+    final Renter? renterDetails,
   }) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -216,11 +466,28 @@ abstract class _User implements User {
   @override
   String get id;
   @override
-  String get name;
-  @override
   String get email;
   @override
-  String get profileImage;
+  String get name;
+  @override
+  UserType get userType;
+  @override
+  String? get photoUrl;
+  @override
+  String? get phoneNumber;
+  @override
+  Address? get address;
+  @override
+  bool get isVerified;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime? get lastActive; // Fields specific to user types
+  // These would be null if not applicable to the user type
+  @override
+  Landlord? get landlordDetails;
+  @override
+  Renter? get renterDetails;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.

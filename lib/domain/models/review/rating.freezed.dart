@@ -24,7 +24,6 @@ mixin _$Rating {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   String get itemId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'value')
   double get rating => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -48,7 +47,7 @@ abstract class $RatingCopyWith<$Res> {
     String id,
     String userId,
     String itemId,
-    @JsonKey(name: 'value') double rating,
+    double rating,
     String type,
     DateTime createdAt,
     String? comment,
@@ -133,7 +132,7 @@ abstract class _$$RatingImplCopyWith<$Res> implements $RatingCopyWith<$Res> {
     String id,
     String userId,
     String itemId,
-    @JsonKey(name: 'value') double rating,
+    double rating,
     String type,
     DateTime createdAt,
     String? comment,
@@ -211,7 +210,7 @@ class _$RatingImpl implements _Rating {
     required this.id,
     required this.userId,
     required this.itemId,
-    @JsonKey(name: 'value') required this.rating,
+    required this.rating,
     this.type = 'property',
     required this.createdAt,
     this.comment,
@@ -227,7 +226,6 @@ class _$RatingImpl implements _Rating {
   @override
   final String itemId;
   @override
-  @JsonKey(name: 'value')
   final double rating;
   @override
   @JsonKey()
@@ -289,7 +287,7 @@ abstract class _Rating implements Rating {
     required final String id,
     required final String userId,
     required final String itemId,
-    @JsonKey(name: 'value') required final double rating,
+    required final double rating,
     final String type,
     required final DateTime createdAt,
     final String? comment,
@@ -304,7 +302,6 @@ abstract class _Rating implements Rating {
   @override
   String get itemId;
   @override
-  @JsonKey(name: 'value')
   double get rating;
   @override
   String get type;

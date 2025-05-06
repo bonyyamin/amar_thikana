@@ -1,13 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amar_thikana/domain/models/property/property.dart';
-
+import 'package:amar_thikana/domain/models/location/location.dart';
+import 'package:amar_thikana/domain/models/location/address.dart';
+import 'package:logging/logging.dart';
 
 final propertiesProvider = FutureProvider<List<Property>>((ref) async {
   await Future.delayed(const Duration(milliseconds: 800));
 
   final now = DateTime.now();
   final oneWeekAgo = now.subtract(const Duration(days: 7));
-  
 
   return [
     Property(
@@ -20,6 +21,15 @@ final propertiesProvider = FutureProvider<List<Property>>((ref) async {
         city: 'Dhanmondi',
         state: 'Dhaka',
         country: 'Bangladesh',
+        latitude: 12,
+        longitude: 12,
+        address: Address(
+          street: 'street',
+          area: 'area',
+          city: 'city',
+          postalCode: 'postalCode',
+          country: 'country',
+        ),
       ),
       pricePerMonth: 25000,
       rating: 4.8,
@@ -49,6 +59,15 @@ final propertiesProvider = FutureProvider<List<Property>>((ref) async {
         city: 'Mohammadpur',
         state: 'Dhaka',
         country: 'Bangladesh',
+        latitude: 12,
+        longitude: 12,
+        address: Address(
+          street: 'street',
+          area: 'area',
+          city: 'city',
+          postalCode: 'postalCode',
+          country: 'country',
+        ),
       ),
       pricePerMonth: 8000,
       rating: 4.5,
@@ -74,9 +93,18 @@ final propertiesProvider = FutureProvider<List<Property>>((ref) async {
           'Exclusive bachelor building with shared facilities, generator, and high-speed internet.',
       coverImage: 'https://picsum.photos/200/302',
       location: const Location(
-        city: 'Uttara',
-        state: 'Dhaka',
-        country: 'Bangladesh',
+        latitude: 23.8103,
+        longitude: 90.4125,
+        address: Address(
+          street: 'Road 5',
+          area: 'Sector 7',
+          city: 'Uttara',
+          postalCode: '1230',
+          country: 'Bangladesh',
+        ),
+        city: '',
+        state: '',
+        country: '',
       ),
       pricePerMonth: 15000,
       rating: 4.7,
@@ -105,9 +133,22 @@ void addProperty(WidgetRef ref, Property property) {
   // to a database or an API.
   print('Adding property: ${property.title}');
 }
+
 void updateProperty(WidgetRef ref, Property property) {
   // This function is a placeholder for updating a property in the list.
   // In a real application, you would implement the logic to update the property
   // in a database or an API.
   print('Updating property: ${property.title}');
+}
+
+void printProperties(List<Property> properties) {
+  final logger = Logger('PropertiesProvider');
+  logger.info('Current properties: $properties');
+}
+
+void handleError(Object error, [String? context]) {
+  final logger = Logger('PropertiesProvider');
+  logger.severe(
+    'Error in PropertiesProvider${context != null ? " ($context)" : ""}: $error',
+  );
 }

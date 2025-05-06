@@ -11,33 +11,49 @@ class MessagesListScreen extends ConsumerWidget {
     final state = ref.watch(conversationsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Messages'),
-      ),
+      appBar: AppBar(title: const Text('Messages')),
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e) => Center(child: Text('Error: $e')),
-        loaded: (conversations) => ListView.builder(
-          itemCount: conversations.length,
-          itemBuilder: (context, index) {
-            final conversation = conversations[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(conversation.userProfileImage),
-              ),
-              title: Text(conversation.userName),
-              subtitle: Text(conversation.messages.last.content),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ChatScreen(conversationId: conversation.id),
+        loaded:
+            (conversations) => ListView.builder(
+              itemCount: conversations.length,
+              itemBuilder: (context, index) {
+                final conversation = conversations[index];
+                final String firstParticipantId =
+                    conversation.participants.first;
+                final String userName =
+                    conversation.participantNames[firstParticipantId] ??
+                    'Unknown';
+                final String? userProfileImage =
+                    conversation.participantPhotos?[firstParticipantId];
+
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        userProfileImage != null
+                            ? NetworkImage(userProfileImage)
+                            : null,
+                    child: userProfileImage == null ? Icon(Icons.person) : null,
                   ),
+                  title: Text(userName),
+                  subtitle: Text(
+                    conversation.messages.isNotEmpty
+                        ? conversation.messages.last.content
+                        : '',
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => ChatScreen(conversationId: conversation.id),
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
+            ),
       ),
     );
   }

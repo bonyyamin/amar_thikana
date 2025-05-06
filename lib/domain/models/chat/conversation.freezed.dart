@@ -22,9 +22,18 @@ Conversation _$ConversationFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Conversation {
   String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
-  String get userProfileImage => throw _privateConstructorUsedError;
+  List<String> get participants =>
+      throw _privateConstructorUsedError; // List of user IDs
+  Map<String, String> get participantNames =>
+      throw _privateConstructorUsedError; // Map of user IDs to names
+  Map<String, String>? get participantPhotos =>
+      throw _privateConstructorUsedError; // Map of user IDs to photo URLs
+  String get lastMessageText => throw _privateConstructorUsedError;
+  DateTime get lastMessageTime => throw _privateConstructorUsedError;
+  Map<String, bool> get unreadStatus =>
+      throw _privateConstructorUsedError; // Map of user IDs to unread status
+  String? get propertyId =>
+      throw _privateConstructorUsedError; // Optional reference to a property if conversation is about a specific property
   List<Message> get messages => throw _privateConstructorUsedError;
 
   /// Serializes this Conversation to a JSON map.
@@ -46,9 +55,13 @@ abstract class $ConversationCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String userId,
-    String userName,
-    String userProfileImage,
+    List<String> participants,
+    Map<String, String> participantNames,
+    Map<String, String>? participantPhotos,
+    String lastMessageText,
+    DateTime lastMessageTime,
+    Map<String, bool> unreadStatus,
+    String? propertyId,
     List<Message> messages,
   });
 }
@@ -69,9 +82,13 @@ class _$ConversationCopyWithImpl<$Res, $Val extends Conversation>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
-    Object? userName = null,
-    Object? userProfileImage = null,
+    Object? participants = null,
+    Object? participantNames = null,
+    Object? participantPhotos = freezed,
+    Object? lastMessageText = null,
+    Object? lastMessageTime = null,
+    Object? unreadStatus = null,
+    Object? propertyId = freezed,
     Object? messages = null,
   }) {
     return _then(
@@ -81,21 +98,41 @@ class _$ConversationCopyWithImpl<$Res, $Val extends Conversation>
                     ? _value.id
                     : id // ignore: cast_nullable_to_non_nullable
                         as String,
-            userId:
-                null == userId
-                    ? _value.userId
-                    : userId // ignore: cast_nullable_to_non_nullable
+            participants:
+                null == participants
+                    ? _value.participants
+                    : participants // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            participantNames:
+                null == participantNames
+                    ? _value.participantNames
+                    : participantNames // ignore: cast_nullable_to_non_nullable
+                        as Map<String, String>,
+            participantPhotos:
+                freezed == participantPhotos
+                    ? _value.participantPhotos
+                    : participantPhotos // ignore: cast_nullable_to_non_nullable
+                        as Map<String, String>?,
+            lastMessageText:
+                null == lastMessageText
+                    ? _value.lastMessageText
+                    : lastMessageText // ignore: cast_nullable_to_non_nullable
                         as String,
-            userName:
-                null == userName
-                    ? _value.userName
-                    : userName // ignore: cast_nullable_to_non_nullable
-                        as String,
-            userProfileImage:
-                null == userProfileImage
-                    ? _value.userProfileImage
-                    : userProfileImage // ignore: cast_nullable_to_non_nullable
-                        as String,
+            lastMessageTime:
+                null == lastMessageTime
+                    ? _value.lastMessageTime
+                    : lastMessageTime // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            unreadStatus:
+                null == unreadStatus
+                    ? _value.unreadStatus
+                    : unreadStatus // ignore: cast_nullable_to_non_nullable
+                        as Map<String, bool>,
+            propertyId:
+                freezed == propertyId
+                    ? _value.propertyId
+                    : propertyId // ignore: cast_nullable_to_non_nullable
+                        as String?,
             messages:
                 null == messages
                     ? _value.messages
@@ -118,9 +155,13 @@ abstract class _$$ConversationImplCopyWith<$Res>
   @useResult
   $Res call({
     String id,
-    String userId,
-    String userName,
-    String userProfileImage,
+    List<String> participants,
+    Map<String, String> participantNames,
+    Map<String, String>? participantPhotos,
+    String lastMessageText,
+    DateTime lastMessageTime,
+    Map<String, bool> unreadStatus,
+    String? propertyId,
     List<Message> messages,
   });
 }
@@ -140,9 +181,13 @@ class __$$ConversationImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
-    Object? userName = null,
-    Object? userProfileImage = null,
+    Object? participants = null,
+    Object? participantNames = null,
+    Object? participantPhotos = freezed,
+    Object? lastMessageText = null,
+    Object? lastMessageTime = null,
+    Object? unreadStatus = null,
+    Object? propertyId = freezed,
     Object? messages = null,
   }) {
     return _then(
@@ -152,21 +197,41 @@ class __$$ConversationImplCopyWithImpl<$Res>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                     as String,
-        userId:
-            null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
+        participants:
+            null == participants
+                ? _value._participants
+                : participants // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        participantNames:
+            null == participantNames
+                ? _value._participantNames
+                : participantNames // ignore: cast_nullable_to_non_nullable
+                    as Map<String, String>,
+        participantPhotos:
+            freezed == participantPhotos
+                ? _value._participantPhotos
+                : participantPhotos // ignore: cast_nullable_to_non_nullable
+                    as Map<String, String>?,
+        lastMessageText:
+            null == lastMessageText
+                ? _value.lastMessageText
+                : lastMessageText // ignore: cast_nullable_to_non_nullable
                     as String,
-        userName:
-            null == userName
-                ? _value.userName
-                : userName // ignore: cast_nullable_to_non_nullable
-                    as String,
-        userProfileImage:
-            null == userProfileImage
-                ? _value.userProfileImage
-                : userProfileImage // ignore: cast_nullable_to_non_nullable
-                    as String,
+        lastMessageTime:
+            null == lastMessageTime
+                ? _value.lastMessageTime
+                : lastMessageTime // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        unreadStatus:
+            null == unreadStatus
+                ? _value._unreadStatus
+                : unreadStatus // ignore: cast_nullable_to_non_nullable
+                    as Map<String, bool>,
+        propertyId:
+            freezed == propertyId
+                ? _value.propertyId
+                : propertyId // ignore: cast_nullable_to_non_nullable
+                    as String?,
         messages:
             null == messages
                 ? _value._messages
@@ -182,25 +247,77 @@ class __$$ConversationImplCopyWithImpl<$Res>
 class _$ConversationImpl implements _Conversation {
   const _$ConversationImpl({
     required this.id,
-    required this.userId,
-    required this.userName,
-    required this.userProfileImage,
-    required final List<Message> messages,
-  }) : _messages = messages;
+    required final List<String> participants,
+    required final Map<String, String> participantNames,
+    final Map<String, String>? participantPhotos,
+    required this.lastMessageText,
+    required this.lastMessageTime,
+    required final Map<String, bool> unreadStatus,
+    this.propertyId,
+    final List<Message> messages = const [],
+  }) : _participants = participants,
+       _participantNames = participantNames,
+       _participantPhotos = participantPhotos,
+       _unreadStatus = unreadStatus,
+       _messages = messages;
 
   factory _$ConversationImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConversationImplFromJson(json);
 
   @override
   final String id;
+  final List<String> _participants;
   @override
-  final String userId;
+  List<String> get participants {
+    if (_participants is EqualUnmodifiableListView) return _participants;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_participants);
+  }
+
+  // List of user IDs
+  final Map<String, String> _participantNames;
+  // List of user IDs
   @override
-  final String userName;
+  Map<String, String> get participantNames {
+    if (_participantNames is EqualUnmodifiableMapView) return _participantNames;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_participantNames);
+  }
+
+  // Map of user IDs to names
+  final Map<String, String>? _participantPhotos;
+  // Map of user IDs to names
   @override
-  final String userProfileImage;
+  Map<String, String>? get participantPhotos {
+    final value = _participantPhotos;
+    if (value == null) return null;
+    if (_participantPhotos is EqualUnmodifiableMapView)
+      return _participantPhotos;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  // Map of user IDs to photo URLs
+  @override
+  final String lastMessageText;
+  @override
+  final DateTime lastMessageTime;
+  final Map<String, bool> _unreadStatus;
+  @override
+  Map<String, bool> get unreadStatus {
+    if (_unreadStatus is EqualUnmodifiableMapView) return _unreadStatus;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_unreadStatus);
+  }
+
+  // Map of user IDs to unread status
+  @override
+  final String? propertyId;
+  // Optional reference to a property if conversation is about a specific property
   final List<Message> _messages;
+  // Optional reference to a property if conversation is about a specific property
   @override
+  @JsonKey()
   List<Message> get messages {
     if (_messages is EqualUnmodifiableListView) return _messages;
     // ignore: implicit_dynamic_type
@@ -209,7 +326,7 @@ class _$ConversationImpl implements _Conversation {
 
   @override
   String toString() {
-    return 'Conversation(id: $id, userId: $userId, userName: $userName, userProfileImage: $userProfileImage, messages: $messages)';
+    return 'Conversation(id: $id, participants: $participants, participantNames: $participantNames, participantPhotos: $participantPhotos, lastMessageText: $lastMessageText, lastMessageTime: $lastMessageTime, unreadStatus: $unreadStatus, propertyId: $propertyId, messages: $messages)';
   }
 
   @override
@@ -218,11 +335,28 @@ class _$ConversationImpl implements _Conversation {
         (other.runtimeType == runtimeType &&
             other is _$ConversationImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.userName, userName) ||
-                other.userName == userName) &&
-            (identical(other.userProfileImage, userProfileImage) ||
-                other.userProfileImage == userProfileImage) &&
+            const DeepCollectionEquality().equals(
+              other._participants,
+              _participants,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._participantNames,
+              _participantNames,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._participantPhotos,
+              _participantPhotos,
+            ) &&
+            (identical(other.lastMessageText, lastMessageText) ||
+                other.lastMessageText == lastMessageText) &&
+            (identical(other.lastMessageTime, lastMessageTime) ||
+                other.lastMessageTime == lastMessageTime) &&
+            const DeepCollectionEquality().equals(
+              other._unreadStatus,
+              _unreadStatus,
+            ) &&
+            (identical(other.propertyId, propertyId) ||
+                other.propertyId == propertyId) &&
             const DeepCollectionEquality().equals(other._messages, _messages));
   }
 
@@ -231,9 +365,13 @@ class _$ConversationImpl implements _Conversation {
   int get hashCode => Object.hash(
     runtimeType,
     id,
-    userId,
-    userName,
-    userProfileImage,
+    const DeepCollectionEquality().hash(_participants),
+    const DeepCollectionEquality().hash(_participantNames),
+    const DeepCollectionEquality().hash(_participantPhotos),
+    lastMessageText,
+    lastMessageTime,
+    const DeepCollectionEquality().hash(_unreadStatus),
+    propertyId,
     const DeepCollectionEquality().hash(_messages),
   );
 
@@ -254,10 +392,14 @@ class _$ConversationImpl implements _Conversation {
 abstract class _Conversation implements Conversation {
   const factory _Conversation({
     required final String id,
-    required final String userId,
-    required final String userName,
-    required final String userProfileImage,
-    required final List<Message> messages,
+    required final List<String> participants,
+    required final Map<String, String> participantNames,
+    final Map<String, String>? participantPhotos,
+    required final String lastMessageText,
+    required final DateTime lastMessageTime,
+    required final Map<String, bool> unreadStatus,
+    final String? propertyId,
+    final List<Message> messages,
   }) = _$ConversationImpl;
 
   factory _Conversation.fromJson(Map<String, dynamic> json) =
@@ -266,11 +408,19 @@ abstract class _Conversation implements Conversation {
   @override
   String get id;
   @override
-  String get userId;
+  List<String> get participants; // List of user IDs
   @override
-  String get userName;
+  Map<String, String> get participantNames; // Map of user IDs to names
   @override
-  String get userProfileImage;
+  Map<String, String>? get participantPhotos; // Map of user IDs to photo URLs
+  @override
+  String get lastMessageText;
+  @override
+  DateTime get lastMessageTime;
+  @override
+  Map<String, bool> get unreadStatus; // Map of user IDs to unread status
+  @override
+  String? get propertyId; // Optional reference to a property if conversation is about a specific property
   @override
   List<Message> get messages;
 

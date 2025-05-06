@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:amar_thikana/application/providers/messaging/chat_provider.dart';
 
-
 class ChatScreen extends ConsumerWidget {
   final String conversationId;
 
@@ -15,26 +14,30 @@ class ChatScreen extends ConsumerWidget {
     final chatState = ref.watch(chatProvider(conversationId));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat'),
-      ),
+      appBar: AppBar(title: const Text('Chat')),
       body: Column(
         children: [
           Expanded(
             child: chatState.when(
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (e) => Center(child: Text('Error: $e')),
-              loaded: (messages) => ListView.builder(
-                reverse: true,
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final message = messages[messages.length - 1 - index];
-                  return MessageBubble(message: message);
-                },
-              ),
+              loaded:
+                  (messages) => ListView.builder(
+                    reverse: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[messages.length - 1 - index];
+                      return MessageBubble(
+                        message: message,
+                        currentUserId:
+                        // TODO: Replace with the actual logged-in user ID
+                            '', // Replace with the actual logged-in user ID
+                      );
+                    },
+                  ),
             ),
           ),
-          ChatInput(conversationId: conversationId),
+          ChatInput(conversationId: conversationId, currentUserId: '', recipients: [],),
         ],
       ),
     );
