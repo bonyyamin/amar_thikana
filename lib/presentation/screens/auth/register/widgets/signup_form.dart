@@ -1,9 +1,12 @@
+import 'package:amar_thikana/application/providers/auth/auth_providers.dart';
+import 'package:amar_thikana/domain/models/user/user_role.dart';
 import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
 import 'package:amar_thikana/presentation/common_widgets/loaders/circular_loader.dart';
+import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'user_type_selector.dart';
-import '../../../../../application/providers/auth/auth_providers.dart';
 
 class SignupForm extends ConsumerStatefulWidget {
   const SignupForm({super.key});
@@ -34,34 +37,36 @@ class _SignupFormState extends ConsumerState<SignupForm> {
 
   Future<void> _onSignupPressed() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final notifier = ref.read(authNotifierProvider.notifier);
-      final result = await notifier.register(
-        name: _nameController.text.trim(),
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-        role: _selectedRole,
-      );
+      try {
+        final notifier = ref.read(authStateNotifierProvider.notifier);
+        final success = await notifier.register(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+          name: _nameController.text.trim(),
+          userType: _selectedRole.name,
+        );
 
-      if (!result.success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result.message), backgroundColor: Colors.red),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result.message),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.pushReplacementNamed(context, '/login');
+        if (success && mounted) {
+          context.go(RouteNames.login);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Successfully registered! Please login.'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+          );
+        }
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authNotifierProvider);
-
     return Form(
       key: _formKey,
       child: Column(
@@ -139,9 +144,42 @@ class _SignupFormState extends ConsumerState<SignupForm> {
             onChanged: (val) => setState(() => _selectedRole = val),
           ),
           const SizedBox(height: 30),
-          authState.isLoading
-              ? const CircularLoader()
-              : PrimaryButton(text: "Sign Up", onPressed: _onSignupPressed),
+          Consumer(
+            builder: (context, ref, child) {
+              final authState = ref.watch(authStateNotifierProvider);
+
+              return authState.map(
+                loading: (_) => const CircularLoader(),
+                authenticated: (_) => const SizedBox(),
+                unauthenticated:
+                    (_) => PrimaryButton(
+                      text: "Sign Up",
+                      onPressed: _onSignupPressed,
+                    ),
+                error:
+                    (error) => Column(
+                      children: [
+                        if (error.message.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: Text(
+                              error.message,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ),
+                        PrimaryButton(
+                          text: "Sign Up",
+                          onPressed: _onSignupPressed,
+                        ),
+                      ],
+                    ),
+                (_) =>
+                    PrimaryButton(text: "Sign Up", onPressed: _onSignupPressed),
+              );
+            },
+          ),
         ],
       ),
     );

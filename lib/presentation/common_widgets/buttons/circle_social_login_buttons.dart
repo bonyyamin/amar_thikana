@@ -8,7 +8,7 @@ class CircleSocialLoginButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authNotifier = ref.read(authNotifierProvider.notifier);
+    final authNotifier = ref.read(authStateNotifierProvider.notifier);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

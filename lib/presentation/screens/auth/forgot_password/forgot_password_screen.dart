@@ -1,16 +1,20 @@
 import 'package:amar_thikana/presentation/common_widgets/buttons/primary_button.dart';
+import 'package:amar_thikana/presentation/common_widgets/loaders/circular_loader.dart';
 import 'package:amar_thikana/presentation/screens/navigation/router/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:amar_thikana/application/providers/auth/auth_providers.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
+class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  ConsumerState<ForgotPasswordScreen> createState() =>
+      _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   bool _isLoading = false;
@@ -24,27 +28,32 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> _sendResetLink() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-      // --- Simulate Network Request ---
-      await Future.delayed(const Duration(seconds: 2));
-      // --- TODO: Implement actual Forgot Password Logic (e.g., Firebase sendPasswordResetEmail) ---
-      // If successful:
-      // Show success message, maybe navigate back to login
-      // If error:
-      // Show error message
+      try {
+        final notifier = ref.read(authStateNotifierProvider.notifier);
+        await notifier.forgotPassword(_emailController.text.trim());
 
-      print('Sending reset link to: ${_emailController.text}');
-      setState(() => _isLoading = false);
-
-      // Example success feedback
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password reset link sent (if account exists)'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      // Optionally navigate back after a short delay
-      // await Future.delayed(const Duration(seconds: 1));
-      // if (mounted) Navigator.pop(context);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Password reset email sent. Please check your inbox.',
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
+          context.go(RouteNames.login);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
+      }
     }
   }
 
@@ -66,50 +75,94 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Reset Your Password",
-                style: textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
+                'Forgot Password',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               Text(
-                "Enter the email address associated with your account and we'll send you a link to reset your password.",
-                style: textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
+                'Enter your email address and we\'ll send you a password reset link.',
+                style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-
-              // --- Email Field ---
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: "Email Address",
-                  prefixIcon: Icon(Icons.alternate_email),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
               ),
               const SizedBox(height: 30),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email Address',
+                  prefixIcon: Icon(Icons.alternate_email),
+                ),
+                validator:
+                    (value) =>
+                        value == null ||
+                                !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)
+                            ? 'Enter valid email'
+                            : null,
+              ),
+              const SizedBox(height: 30),
+              Consumer(
+                builder: (context, ref, child) {
+                  final authState = ref.watch(authStateNotifierProvider);
 
-              // --- Send Reset Link Button ---
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : PrimaryButton(
-                    text: "Send Reset Link",
-                    onPressed: _sendResetLink,
-                  ),
+                  return authState.map(
+                    loading: (_) => const CircularLoader(),
+                    authenticated: (_) => const SizedBox(),
+                    unauthenticated:
+                        (_) => Column(
+                          children: [
+                            PrimaryButton(
+                              text: 'Send Reset Link',
+                              onPressed: _sendResetLink,
+                            ),
+                            const SizedBox(height: 20),
+                            TextButton(
+                              onPressed: () => context.go(RouteNames.login),
+                              child: const Text('Back to Login'),
+                            ),
+                          ],
+                        ),
+                    error:
+                        (error) => Column(
+                          children: [
+                            if (error.message.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: Text(
+                                  error.message,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                                ),
+                              ),
+                            PrimaryButton(
+                              text: 'Send Reset Link',
+                              onPressed: _sendResetLink,
+                            ),
+                            const SizedBox(height: 20),
+                            TextButton(
+                              onPressed: () => context.go(RouteNames.login),
+                              child: const Text('Back to Login'),
+                            ),
+                          ],
+                        ),
+                    (_) => Column(
+                      children: [
+                        PrimaryButton(
+                          text: 'Send Reset Link',
+                          onPressed: _sendResetLink,
+                        ),
+                        const SizedBox(height: 20),
+                        TextButton(
+                          onPressed: () => context.go(RouteNames.login),
+                          child: const Text('Back to Login'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),

@@ -12,41 +12,44 @@ class ReviewRepository implements ReviewRepositoryInterface {
   final ReviewRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  ReviewRepository({
-    required this.remoteDataSource,
-    required this.networkInfo,
-  });
+  ReviewRepository({required this.remoteDataSource, required this.networkInfo});
 
   @override
-  Future<Either<Failure, List<Review>>> getPropertyReviews(String propertyId) async {
+  Future<Either<Failure, List<Review>>> getPropertyReviews(
+    String propertyId,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
-        final reviewDtos = await remoteDataSource.getPropertyReviews(propertyId);
+        final reviewDtos = await remoteDataSource.getPropertyReviews(
+          propertyId,
+        );
         final reviews = reviewDtos.map((dto) => dto.toDomain()).toList();
         return Right(reviews);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+        return Left(ServerFailure(e.message));
       } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(e.toString()));
       }
     } else {
-      return Left(NetworkFailure(message: 'No internet connection'));
+      return Left(NetworkFailure('No internet connection'));
     }
   }
 
   @override
-  Future<Either<Failure, Map<String, double>>> getPropertyReviewStats(String propertyId) async {
+  Future<Either<Failure, Map<String, double>>> getPropertyReviewStats(
+    String propertyId,
+  ) async {
     if (await networkInfo.isConnected) {
       try {
         final stats = await remoteDataSource.getPropertyReviewStats(propertyId);
         return Right(stats);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+        return Left(ServerFailure(e.message));
       } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(e.toString()));
       }
     } else {
-      return Left(NetworkFailure(message: 'No internet connection'));
+      return Left(NetworkFailure('No internet connection'));
     }
   }
 
@@ -58,12 +61,12 @@ class ReviewRepository implements ReviewRepositoryInterface {
         final resultDto = await remoteDataSource.addReview(reviewDto);
         return Right(resultDto.toDomain());
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+        return Left(ServerFailure(e.message));
       } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(e.toString()));
       }
     } else {
-      return Left(NetworkFailure(message: 'No internet connection'));
+      return Left(NetworkFailure('No internet connection'));
     }
   }
 
@@ -75,12 +78,12 @@ class ReviewRepository implements ReviewRepositoryInterface {
         final resultDto = await remoteDataSource.updateReview(reviewDto);
         return Right(resultDto.toDomain());
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+        return Left(ServerFailure(e.message));
       } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(e.toString()));
       }
     } else {
-      return Left(NetworkFailure(message: 'No internet connection'));
+      return Left(NetworkFailure('No internet connection'));
     }
   }
 
@@ -91,12 +94,12 @@ class ReviewRepository implements ReviewRepositoryInterface {
         final result = await remoteDataSource.deleteReview(reviewId);
         return Right(result);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+        return Left(ServerFailure(e.message));
       } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(e.toString()));
       }
     } else {
-      return Left(NetworkFailure(message: 'No internet connection'));
+      return Left(NetworkFailure('No internet connection'));
     }
   }
 
@@ -108,12 +111,12 @@ class ReviewRepository implements ReviewRepositoryInterface {
         final reviews = reviewDtos.map((dto) => dto.toDomain()).toList();
         return Right(reviews);
       } on ServerException catch (e) {
-        return Left(ServerFailure(message: e.message));
+        return Left(ServerFailure(e.message));
       } catch (e) {
-        return Left(ServerFailure(message: e.toString()));
+        return Left(ServerFailure(e.toString()));
       }
     } else {
-      return Left(NetworkFailure(message: 'No internet connection'));
+      return Left(NetworkFailure('No internet connection'));
     }
   }
 }

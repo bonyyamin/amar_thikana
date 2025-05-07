@@ -24,27 +24,29 @@ class ReviewRemoteDataSourceImpl implements ReviewRemoteDataSource {
   @override
   Future<List<ReviewDto>> getPropertyReviews(String propertyId) async {
     try {
-      final snapshot = await firestore
-          .collection('reviews')
-          .where('propertyId', isEqualTo: propertyId)
-          .orderBy('createdAt', descending: true)
-          .get();
+      final snapshot =
+          await firestore
+              .collection('reviews')
+              .where('propertyId', isEqualTo: propertyId)
+              .orderBy('createdAt', descending: true)
+              .get();
 
       return snapshot.docs
           .map((doc) => ReviewDto.fromJson({...doc.data(), 'id': doc.id}))
           .toList();
     } catch (e) {
-      throw ServerException(message: 'Failed to fetch property reviews: $e');
+      throw ServerException('Failed to fetch property reviews: $e', 500);
     }
   }
 
   @override
   Future<Map<String, double>> getPropertyReviewStats(String propertyId) async {
     try {
-      final snapshot = await firestore
-          .collection('reviews')
-          .where('propertyId', isEqualTo: propertyId)
-          .get();
+      final snapshot =
+          await firestore
+              .collection('reviews')
+              .where('propertyId', isEqualTo: propertyId)
+              .get();
 
       if (snapshot.docs.isEmpty) {
         return {
@@ -76,7 +78,7 @@ class ReviewRemoteDataSourceImpl implements ReviewRemoteDataSource {
       }
 
       final count = snapshot.docs.length;
-      
+
       return {
         'overall': overallSum / count,
         'location': locationSum / count,
@@ -87,7 +89,7 @@ class ReviewRemoteDataSourceImpl implements ReviewRemoteDataSource {
         'count': count.toDouble(),
       };
     } catch (e) {
-      throw ServerException(message: 'Failed to fetch review stats: $e');
+      throw ServerException('Failed to fetch review stats: $e', 500);
     }
   }
 
@@ -95,26 +97,28 @@ class ReviewRemoteDataSourceImpl implements ReviewRemoteDataSource {
   Future<ReviewDto> addReview(ReviewDto reviewDto) async {
     try {
       // Check if user already reviewed this property
-      final existingReviews = await firestore
-          .collection('reviews')
-          .where('propertyId', isEqualTo: reviewDto.propertyId)
-          .where('reviewerId', isEqualTo: reviewDto.reviewerId)
-          .get();
+      final existingReviews =
+          await firestore
+              .collection('reviews')
+              .where('propertyId', isEqualTo: reviewDto.propertyId)
+              .where('reviewerId', isEqualTo: reviewDto.reviewerId)
+              .get();
 
       if (existingReviews.docs.isNotEmpty) {
-        throw ServerException(
-            message: 'You have already reviewed this property');
+        throw ServerException('You have already reviewed this property', 400);
       }
 
-      final docRef = await firestore.collection('reviews').add(reviewDto.toJson());
+      final docRef = await firestore
+          .collection('reviews')
+          .add(reviewDto.toJson());
       final newDoc = await docRef.get();
-      
+
       return ReviewDto.fromJson({...newDoc.data()!, 'id': docRef.id});
     } catch (e) {
       if (e is ServerException) {
-        throw e;
+        rethrow;
       }
-      throw ServerException(message: 'Failed to add review: $e');
+      throw ServerException('Failed to add review: $e', 500);
     }
   }
 
@@ -122,22 +126,20 @@ class ReviewRemoteDataSourceImpl implements ReviewRemoteDataSource {
   Future<ReviewDto> updateReview(ReviewDto reviewDto) async {
     try {
       if (reviewDto.id == null) {
-        throw ServerException(message: 'Review ID cannot be null for update');
+        throw ServerException('Review ID cannot be null for update', 400);
       }
-      
-      await firestore
-          .collection('reviews')
-          .doc(reviewDto.id)
-          .update({
-            ...reviewDto.toJson(),
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
-      
-      final updatedDoc = await firestore.collection('reviews').doc(reviewDto.id).get();
-      
+
+      await firestore.collection('reviews').doc(reviewDto.id).update({
+        ...reviewDto.toJson(),
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
+
+      final updatedDoc =
+          await firestore.collection('reviews').doc(reviewDto.id).get();
+
       return ReviewDto.fromJson({...updatedDoc.data()!, 'id': updatedDoc.id});
     } catch (e) {
-      throw ServerException(message: 'Failed to update review: $e');
+      throw ServerException('Failed to update review: $e', 500);
     }
   }
 
@@ -147,24 +149,25 @@ class ReviewRemoteDataSourceImpl implements ReviewRemoteDataSource {
       await firestore.collection('reviews').doc(reviewId).delete();
       return true;
     } catch (e) {
-      throw ServerException(message: 'Failed to delete review: $e');
+      throw ServerException('Failed to delete review: $e', 500);
     }
   }
 
   @override
   Future<List<ReviewDto>> getUserReviews(String userId) async {
     try {
-      final snapshot = await firestore
-          .collection('reviews')
-          .where('reviewerId', isEqualTo: userId)
-          .orderBy('createdAt', descending: true)
-          .get();
+      final snapshot =
+          await firestore
+              .collection('reviews')
+              .where('reviewerId', isEqualTo: userId)
+              .orderBy('createdAt', descending: true)
+              .get();
 
       return snapshot.docs
           .map((doc) => ReviewDto.fromJson({...doc.data(), 'id': doc.id}))
           .toList();
     } catch (e) {
-      throw ServerException(message: 'Failed to fetch user reviews: $e');
+      throw ServerException('Failed to fetch user reviews: $e', 500);
     }
   }
 }

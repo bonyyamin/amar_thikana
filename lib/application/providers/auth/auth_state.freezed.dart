@@ -199,6 +199,7 @@ class _$AuthStateImpl implements _AuthState {
   @override
   @JsonKey()
   final bool isLoading;
+  // Ensure this property exists
   @override
   @JsonKey()
   final bool isAuthenticated;
@@ -344,7 +345,7 @@ abstract class _AuthState implements AuthState {
   }) = _$AuthStateImpl;
 
   User? get user;
-  bool get isLoading;
+  bool get isLoading; // Ensure this property exists
   bool get isAuthenticated;
   String? get errorMessage;
 

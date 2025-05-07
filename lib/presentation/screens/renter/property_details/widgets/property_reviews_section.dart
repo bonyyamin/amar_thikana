@@ -62,7 +62,7 @@ class _PropertyReviewsSectionState extends ConsumerState<PropertyReviewsSection>
                 FutureBuilder<bool>(
                   future: ref.read(canUserReviewProvider({
                     'propertyId': widget.propertyId,
-                    'userId': currentUser.uid,
+                    'userId': currentUser.id,
                   }).future),
                   builder: (context, snapshot) {
                     if (snapshot.data == true) {
@@ -94,7 +94,7 @@ class _PropertyReviewsSectionState extends ConsumerState<PropertyReviewsSection>
             separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
               final review = reviewState.reviews[index];
-              final isOwner = currentUser?.uid == review.reviewerId;
+              final isOwner = currentUser?.id == review.reviewerId;
               
               return ReviewItem(
                 review: review,

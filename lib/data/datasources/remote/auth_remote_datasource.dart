@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/network/api_client.dart';
 import '../../../core/constants/api_constants.dart';
 import '../../../core/errors/app_exceptions.dart';
+import '../../../domain/models/user/user.dart';
 
 abstract class IAuthRemoteDataSource {
   /// Login with email and password
@@ -17,13 +18,22 @@ abstract class IAuthRemoteDataSource {
     required String email,
     required String password,
     required String name,
-    required String userType,
+    required String userType, required String phone,
   });
 
   /// Send password reset email
   Future<bool> forgotPassword(String email);
 
-  /// Verify user's auth token
+  /// Get user by email
+  /// Returns null if user doesn't exist
+  Future<User?> getUserByEmail(String email);
+
+  /// Create a new user in the backend
+  /// Returns the created user
+  Future<User> createUser(User user);
+
+  /// Verify auth token
+  /// Returns user data if token is valid
   Future<Map<String, dynamic>> verifyToken(String token);
 }
 
@@ -63,6 +73,7 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
     required String password,
     required String name,
     required String userType,
+    required String phone,
   }) async {
     try {
       final response = await _apiClient.post(
@@ -122,6 +133,51 @@ class AuthRemoteDataSource implements IAuthRemoteDataSource {
     } catch (e) {
       if (e is ServerException) rethrow;
       throw ServerException('Failed to verify token', 500);
+    }
+  }
+
+  @override
+  Future<User?> getUserByEmail(String email) async {
+    try {
+      final response = await _apiClient.get(
+        '${ApiConstants.users}/email/$email',
+      );
+
+      if (response.statusCode == 200) {
+        return User.fromJson(response.data);
+      } else if (response.statusCode == 404) {
+        return null;
+      } else {
+        throw ServerException(
+          response.data['message'] ?? 'Failed to get user',
+          response.statusCode ?? 500,
+        );
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw ServerException('Failed to connect to server', 500);
+    }
+  }
+
+  @override
+  Future<User> createUser(User user) async {
+    try {
+      final response = await _apiClient.post(
+        ApiConstants.users,
+        data: user.toJson(),
+      );
+
+      if (response.statusCode == 201) {
+        return User.fromJson(response.data);
+      } else {
+        throw ServerException(
+          response.data['message'] ?? 'Failed to create user',
+          response.statusCode ?? 500,
+        );
+      }
+    } catch (e) {
+      if (e is ServerException) rethrow;
+      throw ServerException('Failed to connect to server', 500);
     }
   }
 }

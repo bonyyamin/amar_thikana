@@ -14,88 +14,189 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void _initialize() async {
+    // Check if already loading
+    if (state == const AuthState.loading()) return;
+    state = const AuthState.loading();
+
     try {
-      state = const AuthState.loading();
-      
-      // Check if there's a current user
       final currentUser = await _authRepository.getCurrentUser();
-      
+      if (!mounted) return;
+
       if (currentUser != null) {
         state = AuthState.authenticated(currentUser);
       } else {
         state = const AuthState.unauthenticated();
       }
-      
-      // Listen for auth state changes
-      _authSubscription = _authRepository.authStateChanges.listen((user) {
-        if (user != null) {
-          state = AuthState.authenticated(user);
-        } else {
-          state = const AuthState.unauthenticated();
-        }
-      });
-    } on Failure catch (e) {
-      state = AuthState.error(e.message);
+
+      // Listen to Firebase auth state changes
+      _authSubscription = _authRepository.authStateChanges.listen(
+        (user) {
+          if (!mounted) return;
+          if (user != null) {
+            state = AuthState.authenticated(user);
+          } else {
+            state = const AuthState.unauthenticated();
+          }
+        },
+        onError: (error) {
+          if (!mounted) return;
+          state = AuthState.error(error.toString());
+        },
+      );
     } catch (e) {
-      state = AuthState.error('An unexpected error occurred');
+      if (!mounted) return;
+      state = AuthState.error(e.toString());
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<bool> login({required String email, required String password}) async {
+    // Check if already loading
+    if (state == const AuthState.loading()) return false;
+    state = const AuthState.loading();
+
     try {
-      state = const AuthState.loading();
-      final user = await _authRepository.login(email: email, password: password);
+      final user = await _authRepository.login(
+        email: email,
+        password: password,
+      );
+      if (!mounted) return false;
+
       state = AuthState.authenticated(user);
+      return true;
     } on Failure catch (e) {
+      if (!mounted) return false;
       state = AuthState.error(e.message);
+      return false;
     } catch (e) {
+      if (!mounted) return false;
       state = AuthState.error('Failed to login: ${e.toString()}');
+      return false;
     }
   }
 
-  Future<void> register({
+  Future<bool> register({
     required String email,
     required String password,
     required String name,
     required String userType,
   }) async {
+    // Check if already loading
+    if (state == const AuthState.loading()) return false;
+    state = const AuthState.loading();
+
     try {
-      state = const AuthState.loading();
-      final user = await _authRepository.register(
+      await _authRepository.register(
         email: email,
         password: password,
         name: name,
-        userType: userType,
+        userType: userType, phone: '',
       );
-      state = AuthState.authenticated(user);
+      if (!mounted) return false;
+
+      state = const AuthState.unauthenticated();
+      return true;
     } on Failure catch (e) {
+      if (!mounted) return false;
       state = AuthState.error(e.message);
+      return false;
     } catch (e) {
+      if (!mounted) return false;
       state = AuthState.error('Failed to register: ${e.toString()}');
+      return false;
     }
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
+    // Check if already loading
+    if (state == const AuthState.loading()) return false;
+    state = const AuthState.loading();
+
     try {
-      state = const AuthState.loading();
       await _authRepository.logout();
+      if (!mounted) return false;
+
       state = const AuthState.unauthenticated();
+      return true;
     } on Failure catch (e) {
+      if (!mounted) return false;
       state = AuthState.error(e.message);
+      return false;
     } catch (e) {
+      if (!mounted) return false;
       state = AuthState.error('Failed to logout: ${e.toString()}');
+      return false;
     }
   }
 
-  Future<void> forgotPassword(String email) async {
+  Future<bool> forgotPassword(String email) async {
+    // Check if already loading
+    if (state == const AuthState.loading()) return false;
+    state = const AuthState.loading();
+
+    try {
+      await _authRepository.forgotPassword(email);
+      if (!mounted) return false;
+
+      state = const AuthState.unauthenticated();
+      return true;
+    } on Failure catch (e) {
+      if (!mounted) return false;
+      state = AuthState.error(e.message);
+      return false;
+    } catch (e) {
+      if (!mounted) return false;
+      state = AuthState.error('Failed to reset password: ${e.toString()}');
+      return false;
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
     try {
       state = const AuthState.loading();
-      await _authRepository.forgotPassword(email);
-      state = const AuthState.unauthenticated();
+      final user = await _authRepository.signInWithGoogle();
+      if (user != null) {
+        state = AuthState.authenticated(user);
+      } else {
+        state = const AuthState.error('Google sign in failed');
+      }
     } on Failure catch (e) {
       state = AuthState.error(e.message);
     } catch (e) {
-      state = AuthState.error('Failed to reset password: ${e.toString()}');
+      state = AuthState.error('Failed to sign in with Google: ${e.toString()}');
+    }
+  }
+
+  Future<void> loginWithFacebook() async {
+    try {
+      state = const AuthState.loading();
+      final user = await _authRepository.signInWithFacebook();
+      if (user != null) {
+        state = AuthState.authenticated(user);
+      } else {
+        state = const AuthState.error('Facebook sign in failed');
+      }
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
+    } catch (e) {
+      state = AuthState.error(
+        'Failed to sign in with Facebook: ${e.toString()}',
+      );
+    }
+  }
+
+  Future<void> loginWithApple() async {
+    try {
+      state = const AuthState.loading();
+      final user = await _authRepository.signInWithApple();
+      if (user != null) {
+        state = AuthState.authenticated(user);
+      } else {
+        state = const AuthState.error('Apple sign in failed');
+      }
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
+    } catch (e) {
+      state = AuthState.error('Failed to sign in with Apple: ${e.toString()}');
     }
   }
 

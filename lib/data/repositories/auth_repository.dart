@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:amar_thikana/data/services/social_auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:amar_thikana/data/services/firebase_auth_service.dart';
 import 'package:amar_thikana/domain/models/user/renter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,27 +92,52 @@ class AuthRepository implements IAuthRepository {
       final firebaseUser = await _firebaseAuthService
           .signInWithEmailAndPassword(email: email, password: password);
 
-      // Then get user data from API
-      final response = await _remoteDataSource.login(
-        email: email,
-        password: password,
-      );
+      if (firebaseUser == null) {
+        throw Failure('Failed to authenticate with Firebase');
+      }
 
-      // Extract user data and token
-      final userData = response['user'];
-      final token = response['token'];
+      try {
+        // Then get user data from API
+        final response = await _remoteDataSource.login(
+          email: email,
+          password: password,
+        );
 
-      // Create user object
-      final user = User.fromJson(userData);
+        // Extract user data and token
+        final userData = response['user'];
+        final token = response['token'];
 
-      // Cache user data and token
-      await _localDataSource.cacheUserData(user);
-      await _localDataSource.saveAuthToken(token);
+        // Create user object
+        final user = User.fromJson(userData);
 
-      // Notify listeners
-      _authStateController.add(user);
+        // Cache user data and token
+        await _localDataSource.cacheUserData(user);
+        await _localDataSource.saveAuthToken(token);
 
-      return user;
+        // Notify listeners
+        _authStateController.add(user);
+
+        return user;
+      } catch (apiError) {
+        // If API fails but Firebase succeeded, create basic user from Firebase
+        final basicUser = User(
+          id: firebaseUser.uid,
+          email: firebaseUser.email ?? '',
+          name: firebaseUser.displayName ?? '',
+          userType: UserType.renter,
+          isVerified: firebaseUser.emailVerified,
+          createdAt: DateTime.now(),
+          lastActive: DateTime.now(),
+          photoUrl: firebaseUser.photoURL,
+          phoneNumber: firebaseUser.phoneNumber,
+        );
+
+        // Cache basic user data
+        await _localDataSource.cacheUserData(basicUser);
+        _authStateController.add(basicUser);
+
+        return basicUser;
+      }
     } on ServerException catch (e) {
       throw Failure(e.message);
     } on FirebaseAuthException catch (e) {
@@ -126,47 +153,88 @@ class AuthRepository implements IAuthRepository {
     required String password,
     required String name,
     required String userType,
+    required String phone,
   }) async {
     if (!(await _networkInfo.isConnected)) {
       throw Failure('No internet connection');
     }
 
+    firebase_auth.User? firebaseUser;
     try {
       // First create user in Firebase
-      final firebaseUser = await _firebaseAuthService
-          .createUserWithEmailAndPassword(email: email, password: password);
+      firebaseUser = await _firebaseAuthService.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (firebaseUser == null) {
+        throw Failure('Failed to create Firebase account');
+      }
 
       // Update display name
       await _firebaseAuthService.updateDisplayName(name);
 
-      // Then register user in API
-      final response = await _remoteDataSource.register(
-        email: email,
-        password: password,
-        name: name,
-        userType: userType,
-      );
+      try {
+        // Then register user in API
+        final response = await _remoteDataSource.register(
+          email: email,
+          password: password,
+          name: name,
+          userType: userType,
+          phone: phone,
+        );
 
-      // Extract user data and token
-      final userData = response['user'];
-      final token = response['token'];
+        // Extract user data and token
+        final userData = response['user'];
+        final token = response['token'];
 
-      // Create user object
-      final user = User.fromJson(userData);
+        // Create user object
+        final user = User.fromJson(userData);
 
-      // Cache user data and token
-      await _localDataSource.cacheUserData(user);
-      await _localDataSource.saveAuthToken(token);
+        // Cache user data and token
+        await _localDataSource.cacheUserData(user);
+        await _localDataSource.saveAuthToken(token);
 
-      // Notify listeners
-      _authStateController.add(user);
+        // Notify listeners
+        _authStateController.add(user);
 
-      return user;
-    } on ServerException catch (e) {
-      throw Failure(e.message);
-    } on FirebaseAuthException catch (e) {
-      throw Failure(e.message);
+        return user;
+      } catch (apiError) {
+        // If API registration fails, create a basic user from Firebase data
+        final basicUser = User(
+          id: firebaseUser.uid,
+          email: firebaseUser.email ?? '',
+          name: name,
+          userType:
+              userType == 'landlord' ? UserType.landlord : UserType.renter,
+          isVerified: firebaseUser.emailVerified,
+          createdAt: DateTime.now(),
+          lastActive: DateTime.now(),
+          photoUrl: firebaseUser.photoURL,
+          phoneNumber: phone,
+        );
+
+        // Cache basic user data
+        await _localDataSource.cacheUserData(basicUser);
+        _authStateController.add(basicUser);
+
+        return basicUser;
+      }
     } catch (e) {
+      // If Firebase registration failed, attempt to clean up
+      if (firebaseUser != null) {
+        try {
+          await firebaseUser.delete();
+        } catch (_) {
+          // Ignore cleanup errors
+        }
+      }
+
+      if (e is ServerException) {
+        throw Failure(e.message);
+      } else if (e is FirebaseAuthException) {
+        throw Failure(e.message);
+      }
       throw Failure('Failed to register: ${e.toString()}');
     }
   }
@@ -197,15 +265,18 @@ class AuthRepository implements IAuthRepository {
     }
 
     try {
-      // Send reset email via Firebase
+      // Send reset email via Firebase first
       await _firebaseAuthService.sendPasswordResetEmail(email);
 
-      // Also try with API
-      await _remoteDataSource.forgotPassword(email);
+      try {
+        // Try with backend API as well, but don't fail if it doesn't work
+        await _remoteDataSource.forgotPassword(email);
+      } catch (e) {
+        // Log the error but don't fail the operation since Firebase reset worked
+        print('Backend password reset failed: $e');
+      }
 
       return true;
-    } on ServerException catch (e) {
-      throw Failure(e.message);
     } on FirebaseAuthException catch (e) {
       throw Failure(e.message);
     } catch (e) {
@@ -245,4 +316,149 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Stream<User?> get authStateChanges => _authStateController.stream;
+
+  @override
+  Future<User?> signInWithGoogle() async {
+    if (!(await _networkInfo.isConnected)) {
+      throw Failure('No internet connection');
+    }
+
+    try {
+      // Get credentials from social auth service
+      final credential = await SocialAuthService().signInWithGoogle();
+      if (credential == null) return null;
+
+      // Get user data from Firebase
+      final firebaseUser = credential.user;
+      if (firebaseUser == null) return null;
+
+      try {
+        // Check if user exists in our backend
+        final existingUser = await _remoteDataSource.getUserByEmail(
+          firebaseUser.email!,
+        );
+        if (existingUser != null) {
+          await _localDataSource.cacheUserData(existingUser);
+          _authStateController.add(existingUser);
+          return existingUser;
+        }
+
+        // Create new user in backend
+        final newUser = User(
+          id: firebaseUser.uid,
+          email: firebaseUser.email!,
+          name: firebaseUser.displayName ?? '',
+          userType: UserType.renter,
+          isVerified: firebaseUser.emailVerified,
+          createdAt: DateTime.now(),
+          photoUrl: firebaseUser.photoURL,
+        );
+
+        final createdUser = await _remoteDataSource.createUser(newUser);
+        await _localDataSource.cacheUserData(createdUser);
+        _authStateController.add(createdUser);
+        return createdUser;
+      } catch (e) {
+        throw Failure('Failed to create user profile');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Failure(e.message ?? 'Google sign in failed');
+    } catch (e) {
+      throw Failure('Failed to sign in with Google');
+    }
+  }
+
+  @override
+  Future<User?> signInWithFacebook() async {
+    if (!(await _networkInfo.isConnected)) {
+      throw Failure('No internet connection');
+    }
+
+    try {
+      final credential = await SocialAuthService().signInWithFacebook();
+      if (credential == null) return null;
+
+      final firebaseUser = credential.user;
+      if (firebaseUser == null) return null;
+
+      try {
+        final existingUser = await _remoteDataSource.getUserByEmail(
+          firebaseUser.email!,
+        );
+        if (existingUser != null) {
+          await _localDataSource.cacheUserData(existingUser);
+          _authStateController.add(existingUser);
+          return existingUser;
+        }
+
+        final newUser = User(
+          id: firebaseUser.uid,
+          email: firebaseUser.email!,
+          name: firebaseUser.displayName ?? '',
+          userType: UserType.renter,
+          isVerified: firebaseUser.emailVerified,
+          createdAt: DateTime.now(),
+          photoUrl: firebaseUser.photoURL,
+        );
+
+        final createdUser = await _remoteDataSource.createUser(newUser);
+        await _localDataSource.cacheUserData(createdUser);
+        _authStateController.add(createdUser);
+        return createdUser;
+      } catch (e) {
+        throw Failure('Failed to create user profile');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Failure(e.message ?? 'Facebook sign in failed');
+    } catch (e) {
+      throw Failure('Failed to sign in with Facebook');
+    }
+  }
+
+  @override
+  Future<User?> signInWithApple() async {
+    if (!(await _networkInfo.isConnected)) {
+      throw Failure('No internet connection');
+    }
+
+    try {
+      final credential = await SocialAuthService().signInWithApple();
+      if (credential == null) return null;
+
+      final firebaseUser = credential.user;
+      if (firebaseUser == null) return null;
+
+      try {
+        final existingUser = await _remoteDataSource.getUserByEmail(
+          firebaseUser.email!,
+        );
+        if (existingUser != null) {
+          await _localDataSource.cacheUserData(existingUser);
+          _authStateController.add(existingUser);
+          return existingUser;
+        }
+
+        final newUser = User(
+          id: firebaseUser.uid,
+          email: firebaseUser.email!,
+          name: firebaseUser.displayName ?? '',
+          userType: UserType.renter,
+          isVerified: firebaseUser.emailVerified,
+          createdAt: DateTime.now(),
+          photoUrl: firebaseUser.photoURL,
+        );
+
+        final createdUser = await _remoteDataSource.createUser(newUser);
+        await _localDataSource.cacheUserData(createdUser);
+        _authStateController.add(createdUser);
+        return createdUser;
+      } catch (e) {
+        throw Failure('Failed to create user profile');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Failure(e.message ?? 'Apple sign in failed');
+    } catch (e) {
+      throw Failure('Failed to sign in with Apple');
+    }
+  }
 }

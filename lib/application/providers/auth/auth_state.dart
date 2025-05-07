@@ -7,19 +7,18 @@ part 'auth_state.freezed.dart';
 class AuthState with _$AuthState {
   const factory AuthState({
     User? user,
-    @Default(false) bool isLoading,
+    @Default(false) bool isLoading, // Ensure this property exists
     @Default(false) bool isAuthenticated,
     String? errorMessage,
   }) = _AuthState;
-  
 
   /// Initial state with no user and not loading
   factory AuthState.initial() => const AuthState(
-        user: null,
-        isLoading: false,
-        isAuthenticated: false,
-        errorMessage: null,
-      );
+    user: null,
+    isLoading: false,
+    isAuthenticated: false,
+    errorMessage: null,
+  );
 
   /// Loading state
   const factory AuthState.loading() = _Loading;

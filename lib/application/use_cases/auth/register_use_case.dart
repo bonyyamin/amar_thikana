@@ -18,7 +18,7 @@ class RegisterUseCase {
       email: email,
       password: password,
       name: name,
-      userType: userType,
+      userType: userType, phone: '',
     );
   }
 }

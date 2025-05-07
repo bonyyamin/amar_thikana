@@ -28,18 +28,22 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   Future<void> _onLoginPressed() async {
     if (_formKey.currentState?.validate() ?? false) {
-      final notifier = ref.read(authNotifierProvider.notifier);
-      await notifier.login(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      try {
+        final notifier = ref.read(authStateNotifierProvider.notifier);
+        final success = await notifier.login(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
 
-      final state = ref.read(authNotifierProvider);
-      if (state.errorMessage != null) {
+        if (success && mounted) {
+          // Login successful, navigation will be handled by auth state changes
+          return;
+        }
+      } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+          );
         }
       }
     }
@@ -49,7 +53,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final authTheme = theme.extension<AuthThemeExtension>()!;
-    final state = ref.watch(authNotifierProvider);
 
     return Form(
       key: _formKey,
@@ -100,9 +103,41 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             ),
           ),
           const SizedBox(height: 15),
-          state.isLoading
-              ? const CircularLoader()
-              : PrimaryButton(text: "Login", onPressed: _onLoginPressed),
+          Consumer(
+            builder: (context, ref, child) {
+              final authState = ref.watch(authStateNotifierProvider);
+
+              return authState.map(
+                loading: (_) => const CircularLoader(),
+                authenticated: (_) => const SizedBox(),
+                unauthenticated:
+                    (_) => PrimaryButton(
+                      text: "Login",
+                      onPressed: _onLoginPressed,
+                    ),
+                error:
+                    (error) => Column(
+                      children: [
+                        if (error.message.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: Text(
+                              error.message,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ),
+                        PrimaryButton(
+                          text: "Login",
+                          onPressed: _onLoginPressed,
+                        ),
+                      ],
+                    ),
+                (_) => PrimaryButton(text: "Login", onPressed: _onLoginPressed),
+              );
+            },
+          ),
           const SizedBox(height: 20),
         ],
       ),

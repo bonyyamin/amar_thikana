@@ -25,7 +25,7 @@ class ApiClient implements IApiClient {
   ApiClient({
     required Dio dio,
     required SecureStorage secureStorage,
-    required AppConfig appConfig,
+    required AppConfig appConfig, required String baseUrl,
   })  : _dio = dio,
         _secureStorage = secureStorage,
         _appConfig = appConfig {
@@ -142,6 +142,6 @@ final apiClientProvider = Provider<IApiClient>((ref) {
   return ApiClient(
     dio: dio,
     secureStorage: secureStorage,
-    appConfig: appConfig,
+    appConfig: appConfig, baseUrl: '',
   );
 });

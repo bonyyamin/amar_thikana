@@ -28,7 +28,15 @@ abstract class PropertyRepositoryInterface {
     double? minSize,
     double? maxSize,
   });
+  /// Remote fetch
+  Future<Property?> getPropertyDetails(String propertyId);
+
+  /// Local cache lookup
+  Future<Property?> getPropertyFromCache(String propertyId);
   
+  /// Save into local cache
+  Future<void> cachePropertyDetails(Property property);
+
   // Get featured properties
   Future<List<Property>> getFeaturedProperties();
   
@@ -43,4 +51,8 @@ abstract class PropertyRepositoryInterface {
   
   // Remove photo from property
   Future<void> removePropertyPhoto(String propertyId, String imageUrl);
+
+  // New methods for UpdatePropertyUseCase
+  Future<bool> propertyExists(String propertyId);
+  Future<void> savePropertyCache(Property property);
 }

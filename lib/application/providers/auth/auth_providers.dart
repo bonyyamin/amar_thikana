@@ -25,18 +25,29 @@ final authStateProvider = Provider<AuthState>((ref) {
 /// Provider to check if user is authenticated
 final isAuthenticatedProvider = Provider<bool>((ref) {
   final authState = ref.watch(authStateNotifierProvider);
-  return authState.isAuthenticated;
+  return authState.maybeWhen<bool>(
+    (user, isLoading, isAuthenticated, errorMessage) => false,
+    authenticated: (user) => true,
+    orElse: () => false,
+  );
 });
 
 /// Provider to get current user
 final currentUserProvider = Provider<User?>((ref) {
   final authState = ref.watch(authStateNotifierProvider);
-  return authState.user;
+  return authState.maybeWhen<User?>(
+    (user, isLoading, isAuthenticated, errorMessage) => null,
+    authenticated: (user) => user,
+    orElse: () => null,
+  );
 });
 
 /// Provider to check if user is a landlord
 final isLandlordProvider = Provider<bool>((ref) {
   final authState = ref.watch(authStateNotifierProvider);
-  final user = authState.user;
-  return user?.userType == UserType.landlord;
+  return authState.maybeWhen<bool>(
+    (user, isLoading, isAuthenticated, errorMessage) => false,
+    authenticated: (user) => user.userType == UserType.landlord,
+    orElse: () => false,
+  );
 });

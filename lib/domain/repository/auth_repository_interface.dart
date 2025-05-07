@@ -10,10 +10,10 @@ abstract class IAuthRepository {
   /// Registers a new user with email and password
   /// Returns a user if successful, otherwise throws a [Failure]
   Future<User> register({
-    required String email, 
-    required String password, 
+    required String email,
+    required String password,
     required String name,
-    required String userType,
+    required String userType, required String phone,
   });
 
   /// Signs the user out
@@ -31,4 +31,16 @@ abstract class IAuthRepository {
   /// Stream of authentication state changes
   /// Emits a User when signed in, null when signed out
   Stream<User?> get authStateChanges;
+
+  /// Signs in a user with Google
+  /// Returns a user if successful, otherwise throws a [Failure]
+  Future<User?> signInWithGoogle();
+
+  /// Signs in a user with Facebook
+  /// Returns a user if successful, otherwise throws a [Failure]
+  Future<User?> signInWithFacebook();
+
+  /// Signs in a user with Apple
+  /// Returns a user if successful, otherwise throws a [Failure]
+  Future<User?> signInWithApple();
 }
