@@ -1,123 +1,107 @@
-import 'package:amar_thikana/application/providers/review_providers.dart';
+import 'package:amar_thikana/application/providers/auth/auth_providers.dart';
+import 'package:amar_thikana/application/providers/review/review_prodiver.dart';
 import 'package:flutter/material.dart';
-import 'package:amar_thikana/core/theme/app_colors.dart';
-import 'package:amar_thikana/core/theme/app_text_styles.dart';
-import 'package:amar_thikana/domain/models/review/review.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import '../../../../common_widgets/loaders/circular_loader.dart';
+import '../../../../common_widgets/other/empty_state.dart';
+import 'review_item.dart';
+import 'review_stats.dart';
+import 'add_review_button.dart';
 
-class PropertyReviewsSection extends ConsumerWidget {
+class PropertyReviewsSection extends ConsumerStatefulWidget {
   final String propertyId;
-
-  const PropertyReviewsSection({super.key, required this.propertyId});
+  
+  const PropertyReviewsSection({
+    super.key,
+    required this.propertyId,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final reviewsAsync = ref.watch(propertyReviewsProvider(propertyId));
+  ConsumerState<PropertyReviewsSection> createState() => _PropertyReviewsSectionState();
+}
 
-    return reviewsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Text('Error loading reviews: $error'),
-      data:
-          (reviews) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+class _PropertyReviewsSectionState extends ConsumerState<PropertyReviewsSection> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(reviewNotifierProvider.notifier).getPropertyReviews(widget.propertyId);
+      ref.read(reviewNotifierProvider.notifier).getPropertyReviewStats(widget.propertyId);
+      ref.read(selectedPropertyForReviewProvider.notifier).state = widget.propertyId;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final reviewState = ref.watch(reviewNotifierProvider);
+    final currentUser = ref.watch(currentUserProvider);
+
+    if (reviewState.isLoading) {
+      return const CircularLoader();
+    }
+
+    if (reviewState.errorMessage != null) {
+      return Center(
+        child: Text('Error: ${reviewState.errorMessage}'),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Reviews (${reviews.length})',
-                    style: AppTextStyles.h5.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (reviews.isNotEmpty) ...[
-                    Text(
-                      'Avg ${_calculateAverageRating(reviews)}',
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ],
-                ],
+              Text(
+                'Reviews (${reviewState.reviews.length})',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 16),
-              if (reviews.isEmpty)
-                Text(
-                  'No reviews yet',
-                  style: AppTextStyles.bodyMedium.copyWith(color: Colors.grey),
-                )
-              else
-                ...reviews.map(
-                  (review) => Column(
-                    children: [
-                      _buildReviewItem(review),
-                      if (review != reviews.last) const Divider(height: 24),
-                    ],
-                  ),
+              if (currentUser != null)
+                FutureBuilder<bool>(
+                  future: ref.read(canUserReviewProvider({
+                    'propertyId': widget.propertyId,
+                    'userId': currentUser.uid,
+                  }).future),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == true) {
+                      return AddReviewButton(propertyId: widget.propertyId);
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
             ],
           ),
-    );
-  }
-
-  double _calculateAverageRating(List<Review> reviews) {
-    if (reviews.isEmpty) return 0;
-    final total = reviews.fold(0.0, (sum, review) => sum + review.rating);
-    return double.parse((total / reviews.length).toStringAsFixed(1));
-  }
-
-  Widget _buildReviewItem(Review review) {
-    final formattedDate = DateFormat('yyyy-MM-dd').format(review.createdAt);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CircleAvatar(
-          radius: 20,
-          backgroundImage:
-              review.userImage != null
-                  ? NetworkImage(review.userImage!)
-                  : const AssetImage('assets/images/profile.jpg')
-                      as ImageProvider,
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    review.userName,
-                    style: AppTextStyles.bodyLarge.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    formattedDate,
-                    style: AppTextStyles.bodySmall.copyWith(color: Colors.grey),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  Icon(Icons.star, color: AppColors.primary, size: 18),
-                  const SizedBox(width: 4),
-                  Text(
-                    review.rating.toString(),
-                    style: AppTextStyles.bodyMedium.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(review.comment, style: AppTextStyles.bodyMedium),
-            ],
+        // Review statistics
+        if (reviewState.stats.isNotEmpty) 
+          ReviewStats(stats: reviewState.stats),
+          
+        const SizedBox(height: 16),
+        
+        // Reviews list
+        if (reviewState.reviews.isEmpty)
+          const EmptyState(
+            message: 'No reviews yet',
+            icon: Icons.rate_review_outlined,
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: reviewState.reviews.length,
+            separatorBuilder: (context, index) => const Divider(),
+            itemBuilder: (context, index) {
+              final review = reviewState.reviews[index];
+              final isOwner = currentUser?.uid == review.reviewerId;
+              
+              return ReviewItem(
+                review: review,
+                isOwner: isOwner,
+              );
+            },
           ),
-        ),
       ],
     );
   }

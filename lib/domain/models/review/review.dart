@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'rating.dart';
 
 part 'review.freezed.dart';
 part 'review.g.dart';
@@ -8,23 +8,15 @@ part 'review.g.dart';
 class Review with _$Review {
   const factory Review({
     required String id,
-    required String userId,
     required String propertyId,
-    required String userName,
-    required double rating,
-    required DateTime createdAt,
+    required String reviewerId,
+    required String reviewerName,
+    required String reviewerAvatar,
     required String comment,
-    String? userImage,
+    required Rating rating,
+    required DateTime createdAt,
+    DateTime? updatedAt, required String userId, required String userName, required String userImage,
   }) = _Review;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
-
-  static Review fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Review.fromJson({
-      ...data,
-      'id': doc.id,
-      'createdAt': (data['createdAt'] as Timestamp).toDate().toIso8601String(),
-    });
-  }
 }

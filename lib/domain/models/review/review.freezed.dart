@@ -22,13 +22,17 @@ Review _$ReviewFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Review {
   String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
   String get propertyId => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
-  double get rating => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  String get reviewerId => throw _privateConstructorUsedError;
+  String get reviewerName => throw _privateConstructorUsedError;
+  String get reviewerAvatar => throw _privateConstructorUsedError;
   String get comment => throw _privateConstructorUsedError;
-  String? get userImage => throw _privateConstructorUsedError;
+  Rating get rating => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
+  String get userImage => throw _privateConstructorUsedError;
 
   /// Serializes this Review to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,14 +50,20 @@ abstract class $ReviewCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String userId,
     String propertyId,
-    String userName,
-    double rating,
-    DateTime createdAt,
+    String reviewerId,
+    String reviewerName,
+    String reviewerAvatar,
     String comment,
-    String? userImage,
+    Rating rating,
+    DateTime createdAt,
+    DateTime? updatedAt,
+    String userId,
+    String userName,
+    String userImage,
   });
+
+  $RatingCopyWith<$Res> get rating;
 }
 
 /// @nodoc
@@ -72,13 +82,17 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
     Object? propertyId = null,
-    Object? userName = null,
+    Object? reviewerId = null,
+    Object? reviewerName = null,
+    Object? reviewerAvatar = null,
+    Object? comment = null,
     Object? rating = null,
     Object? createdAt = null,
-    Object? comment = null,
-    Object? userImage = freezed,
+    Object? updatedAt = freezed,
+    Object? userId = null,
+    Object? userName = null,
+    Object? userImage = null,
   }) {
     return _then(
       _value.copyWith(
@@ -87,44 +101,74 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
                     ? _value.id
                     : id // ignore: cast_nullable_to_non_nullable
                         as String,
-            userId:
-                null == userId
-                    ? _value.userId
-                    : userId // ignore: cast_nullable_to_non_nullable
-                        as String,
             propertyId:
                 null == propertyId
                     ? _value.propertyId
                     : propertyId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            reviewerId:
+                null == reviewerId
+                    ? _value.reviewerId
+                    : reviewerId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            reviewerName:
+                null == reviewerName
+                    ? _value.reviewerName
+                    : reviewerName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            reviewerAvatar:
+                null == reviewerAvatar
+                    ? _value.reviewerAvatar
+                    : reviewerAvatar // ignore: cast_nullable_to_non_nullable
+                        as String,
+            comment:
+                null == comment
+                    ? _value.comment
+                    : comment // ignore: cast_nullable_to_non_nullable
+                        as String,
+            rating:
+                null == rating
+                    ? _value.rating
+                    : rating // ignore: cast_nullable_to_non_nullable
+                        as Rating,
+            createdAt:
+                null == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            userId:
+                null == userId
+                    ? _value.userId
+                    : userId // ignore: cast_nullable_to_non_nullable
                         as String,
             userName:
                 null == userName
                     ? _value.userName
                     : userName // ignore: cast_nullable_to_non_nullable
                         as String,
-            rating:
-                null == rating
-                    ? _value.rating
-                    : rating // ignore: cast_nullable_to_non_nullable
-                        as double,
-            createdAt:
-                null == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime,
-            comment:
-                null == comment
-                    ? _value.comment
-                    : comment // ignore: cast_nullable_to_non_nullable
-                        as String,
             userImage:
-                freezed == userImage
+                null == userImage
                     ? _value.userImage
                     : userImage // ignore: cast_nullable_to_non_nullable
-                        as String?,
+                        as String,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of Review
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RatingCopyWith<$Res> get rating {
+    return $RatingCopyWith<$Res>(_value.rating, (value) {
+      return _then(_value.copyWith(rating: value) as $Val);
+    });
   }
 }
 
@@ -138,14 +182,21 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
   @useResult
   $Res call({
     String id,
-    String userId,
     String propertyId,
-    String userName,
-    double rating,
-    DateTime createdAt,
+    String reviewerId,
+    String reviewerName,
+    String reviewerAvatar,
     String comment,
-    String? userImage,
+    Rating rating,
+    DateTime createdAt,
+    DateTime? updatedAt,
+    String userId,
+    String userName,
+    String userImage,
   });
+
+  @override
+  $RatingCopyWith<$Res> get rating;
 }
 
 /// @nodoc
@@ -163,13 +214,17 @@ class __$$ReviewImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
     Object? propertyId = null,
-    Object? userName = null,
+    Object? reviewerId = null,
+    Object? reviewerName = null,
+    Object? reviewerAvatar = null,
+    Object? comment = null,
     Object? rating = null,
     Object? createdAt = null,
-    Object? comment = null,
-    Object? userImage = freezed,
+    Object? updatedAt = freezed,
+    Object? userId = null,
+    Object? userName = null,
+    Object? userImage = null,
   }) {
     return _then(
       _$ReviewImpl(
@@ -178,41 +233,61 @@ class __$$ReviewImplCopyWithImpl<$Res>
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
                     as String,
-        userId:
-            null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                    as String,
         propertyId:
             null == propertyId
                 ? _value.propertyId
                 : propertyId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        reviewerId:
+            null == reviewerId
+                ? _value.reviewerId
+                : reviewerId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        reviewerName:
+            null == reviewerName
+                ? _value.reviewerName
+                : reviewerName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        reviewerAvatar:
+            null == reviewerAvatar
+                ? _value.reviewerAvatar
+                : reviewerAvatar // ignore: cast_nullable_to_non_nullable
+                    as String,
+        comment:
+            null == comment
+                ? _value.comment
+                : comment // ignore: cast_nullable_to_non_nullable
+                    as String,
+        rating:
+            null == rating
+                ? _value.rating
+                : rating // ignore: cast_nullable_to_non_nullable
+                    as Rating,
+        createdAt:
+            null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        userId:
+            null == userId
+                ? _value.userId
+                : userId // ignore: cast_nullable_to_non_nullable
                     as String,
         userName:
             null == userName
                 ? _value.userName
                 : userName // ignore: cast_nullable_to_non_nullable
                     as String,
-        rating:
-            null == rating
-                ? _value.rating
-                : rating // ignore: cast_nullable_to_non_nullable
-                    as double,
-        createdAt:
-            null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime,
-        comment:
-            null == comment
-                ? _value.comment
-                : comment // ignore: cast_nullable_to_non_nullable
-                    as String,
         userImage:
-            freezed == userImage
+            null == userImage
                 ? _value.userImage
                 : userImage // ignore: cast_nullable_to_non_nullable
-                    as String?,
+                    as String,
       ),
     );
   }
@@ -223,13 +298,17 @@ class __$$ReviewImplCopyWithImpl<$Res>
 class _$ReviewImpl implements _Review {
   const _$ReviewImpl({
     required this.id,
-    required this.userId,
     required this.propertyId,
-    required this.userName,
+    required this.reviewerId,
+    required this.reviewerName,
+    required this.reviewerAvatar,
+    required this.comment,
     required this.rating,
     required this.createdAt,
-    required this.comment,
-    this.userImage,
+    this.updatedAt,
+    required this.userId,
+    required this.userName,
+    required this.userImage,
   });
 
   factory _$ReviewImpl.fromJson(Map<String, dynamic> json) =>
@@ -238,23 +317,31 @@ class _$ReviewImpl implements _Review {
   @override
   final String id;
   @override
-  final String userId;
-  @override
   final String propertyId;
   @override
-  final String userName;
+  final String reviewerId;
   @override
-  final double rating;
+  final String reviewerName;
   @override
-  final DateTime createdAt;
+  final String reviewerAvatar;
   @override
   final String comment;
   @override
-  final String? userImage;
+  final Rating rating;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime? updatedAt;
+  @override
+  final String userId;
+  @override
+  final String userName;
+  @override
+  final String userImage;
 
   @override
   String toString() {
-    return 'Review(id: $id, userId: $userId, propertyId: $propertyId, userName: $userName, rating: $rating, createdAt: $createdAt, comment: $comment, userImage: $userImage)';
+    return 'Review(id: $id, propertyId: $propertyId, reviewerId: $reviewerId, reviewerName: $reviewerName, reviewerAvatar: $reviewerAvatar, comment: $comment, rating: $rating, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId, userName: $userName, userImage: $userImage)';
   }
 
   @override
@@ -263,15 +350,23 @@ class _$ReviewImpl implements _Review {
         (other.runtimeType == runtimeType &&
             other is _$ReviewImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.propertyId, propertyId) ||
                 other.propertyId == propertyId) &&
-            (identical(other.userName, userName) ||
-                other.userName == userName) &&
+            (identical(other.reviewerId, reviewerId) ||
+                other.reviewerId == reviewerId) &&
+            (identical(other.reviewerName, reviewerName) ||
+                other.reviewerName == reviewerName) &&
+            (identical(other.reviewerAvatar, reviewerAvatar) ||
+                other.reviewerAvatar == reviewerAvatar) &&
+            (identical(other.comment, comment) || other.comment == comment) &&
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.userImage, userImage) ||
                 other.userImage == userImage));
   }
@@ -281,12 +376,16 @@ class _$ReviewImpl implements _Review {
   int get hashCode => Object.hash(
     runtimeType,
     id,
-    userId,
     propertyId,
-    userName,
+    reviewerId,
+    reviewerName,
+    reviewerAvatar,
+    comment,
     rating,
     createdAt,
-    comment,
+    updatedAt,
+    userId,
+    userName,
     userImage,
   );
 
@@ -307,13 +406,17 @@ class _$ReviewImpl implements _Review {
 abstract class _Review implements Review {
   const factory _Review({
     required final String id,
-    required final String userId,
     required final String propertyId,
-    required final String userName,
-    required final double rating,
-    required final DateTime createdAt,
+    required final String reviewerId,
+    required final String reviewerName,
+    required final String reviewerAvatar,
     required final String comment,
-    final String? userImage,
+    required final Rating rating,
+    required final DateTime createdAt,
+    final DateTime? updatedAt,
+    required final String userId,
+    required final String userName,
+    required final String userImage,
   }) = _$ReviewImpl;
 
   factory _Review.fromJson(Map<String, dynamic> json) = _$ReviewImpl.fromJson;
@@ -321,19 +424,27 @@ abstract class _Review implements Review {
   @override
   String get id;
   @override
-  String get userId;
-  @override
   String get propertyId;
   @override
-  String get userName;
+  String get reviewerId;
   @override
-  double get rating;
+  String get reviewerName;
   @override
-  DateTime get createdAt;
+  String get reviewerAvatar;
   @override
   String get comment;
   @override
-  String? get userImage;
+  Rating get rating;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime? get updatedAt;
+  @override
+  String get userId;
+  @override
+  String get userName;
+  @override
+  String get userImage;
 
   /// Create a copy of Review
   /// with the given fields replaced by the non-null parameter values.

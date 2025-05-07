@@ -1,177 +1,107 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../domain/repository/auth_repository_interface.dart';
+import '../../../domain/models/user/user.dart';
+import '../../../core/errors/failure.dart';
 import 'auth_state.dart';
-import '../../../data/services/social_auth_service.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier() : super(const AuthState());
+  final IAuthRepository _authRepository;
+  StreamSubscription<User?>? _authSubscription;
 
-  final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;
-  final _socialAuth = SocialAuthService();
+  AuthNotifier(this._authRepository) : super(AuthState.initial()) {
+    _initialize();
+  }
 
-  Future<bool> login({required String email, required String password}) async {
+  void _initialize() async {
     try {
-      state = state.copyWith(isLoading: true, errorMessage: null);
-
-      final userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      final role = await _getUserRole(userCredential.user?.uid);
-      state = state.copyWith(isLoading: false, role: role);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: _getAuthErrorMessage(e.code),
-      );
-      return false;
+      state = const AuthState.loading();
+      
+      // Check if there's a current user
+      final currentUser = await _authRepository.getCurrentUser();
+      
+      if (currentUser != null) {
+        state = AuthState.authenticated(currentUser);
+      } else {
+        state = const AuthState.unauthenticated();
+      }
+      
+      // Listen for auth state changes
+      _authSubscription = _authRepository.authStateChanges.listen((user) {
+        if (user != null) {
+          state = AuthState.authenticated(user);
+        } else {
+          state = const AuthState.unauthenticated();
+        }
+      });
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: 'An unexpected error occurred',
-      );
-      return false;
+      state = AuthState.error('An unexpected error occurred');
     }
   }
 
-  String _getAuthErrorMessage(String code) {
-    switch (code) {
-      case 'user-not-found':
-        return 'No user found for this email';
-      case 'wrong-password':
-        return 'Incorrect password';
-      default:
-        return 'Authentication error: $code';
+  Future<void> login({required String email, required String password}) async {
+    try {
+      state = const AuthState.loading();
+      final user = await _authRepository.login(email: email, password: password);
+      state = AuthState.authenticated(user);
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
+    } catch (e) {
+      state = AuthState.error('Failed to login: ${e.toString()}');
     }
   }
 
-  Future<String> _getUserRole(String? uid) async {
-    if (uid == null) throw Exception('User ID is null');
-
-    final doc = await _firestore.collection('users').doc(uid).get();
-    final role = doc.data()?['role'] as String? ?? 'unknown';
-
-    if (!['renter', 'landlord'].contains(role)) {
-      throw Exception('Invalid user role: $role');
-    }
-
-    return role;
-  }
-
-  Future<void> loginWithGoogle() async {
-    state = state.copyWith(isLoading: true);
-    final result = await _socialAuth.signInWithGoogle();
-    _handleSocialLoginResult(result);
-  }
-
-  Future<void> loginWithFacebook() async {
-    state = state.copyWith(isLoading: true);
-    final result = await _socialAuth.signInWithFacebook();
-    _handleSocialLoginResult(result);
-  }
-
-  Future<void> loginWithApple() async {
-    state = state.copyWith(isLoading: true);
-    final result = await _socialAuth.signInWithApple();
-    _handleSocialLoginResult(result);
-  }
-
-  void _handleSocialLoginResult(UserCredential? result) {
-    if (result == null) {
-      state = state.copyWith(isLoading: false, errorMessage: 'Login failed');
-      return;
-    }
-
-    final uid = result.user?.uid;
-    if (uid == null) {
-      state = state.copyWith(isLoading: false, errorMessage: 'User ID is null');
-      return;
-    }
-
-    _firestore
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((doc) {
-          final role = doc.data()?['role'] ?? 'unknown';
-          state = state.copyWith(role: role, isLoading: false);
-        })
-        .catchError((error) {
-          state = state.copyWith(
-            isLoading: false,
-            errorMessage: 'Failed to fetch user role',
-          );
-        });
-  }
-
-  /// Registers a new user with email, password, name, and role.
-  Future<_RegisterResult> register({
-    required String name,
+  Future<void> register({
     required String email,
     required String password,
-    required dynamic role, // Accepts UserRole or String
+    required String name,
+    required String userType,
   }) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
+      state = const AuthState.loading();
+      final user = await _authRepository.register(
         email: email,
         password: password,
+        name: name,
+        userType: userType,
       );
-      final uid = userCredential.user?.uid;
-      if (uid == null) {
-        state = state.copyWith(isLoading: false);
-        return _RegisterResult(false, 'Registration failed: No user ID');
-      }
-
-      // Convert role to string if needed
-      final roleStr = role is String ? role : role.toString().split('.').last;
-
-      // Store user info in Firestore
-      await _firestore.collection('users').doc(uid).set({
-        'name': name,
-        'email': email,
-        'role': roleStr,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
-      state = state.copyWith(isLoading: false, role: roleStr);
-      return _RegisterResult(true, 'Registration successful! Please log in.');
-    } on FirebaseAuthException catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: _getRegisterErrorMessage(e.code),
-      );
-      return _RegisterResult(false, _getRegisterErrorMessage(e.code));
+      state = AuthState.authenticated(user);
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: 'An unexpected error occurred',
-      );
-      return _RegisterResult(false, 'An unexpected error occurred');
+      state = AuthState.error('Failed to register: ${e.toString()}');
     }
   }
 
-  String _getRegisterErrorMessage(String code) {
-    switch (code) {
-      case 'email-already-in-use':
-        return 'Email is already in use';
-      case 'invalid-email':
-        return 'Invalid email address';
-      case 'weak-password':
-        return 'Password is too weak';
-      default:
-        return 'Registration error: $code';
+  Future<void> logout() async {
+    try {
+      state = const AuthState.loading();
+      await _authRepository.logout();
+      state = const AuthState.unauthenticated();
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
+    } catch (e) {
+      state = AuthState.error('Failed to logout: ${e.toString()}');
     }
   }
-}
 
-/// Simple result class for registration
-class _RegisterResult {
-  final bool success;
-  final String message;
-  _RegisterResult(this.success, this.message);
+  Future<void> forgotPassword(String email) async {
+    try {
+      state = const AuthState.loading();
+      await _authRepository.forgotPassword(email);
+      state = const AuthState.unauthenticated();
+    } on Failure catch (e) {
+      state = AuthState.error(e.message);
+    } catch (e) {
+      state = AuthState.error('Failed to reset password: ${e.toString()}');
+    }
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
+  }
 }

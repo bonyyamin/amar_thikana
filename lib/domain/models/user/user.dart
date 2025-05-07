@@ -6,11 +6,7 @@ import '../location/address.dart';
 part 'user.freezed.dart';
 part 'user.g.dart';
 
-enum UserType {
-  renter,
-  landlord,
-  admin,
-}
+enum UserType { renter, landlord, admin }
 
 @freezed
 class User with _$User {
@@ -32,4 +28,19 @@ class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+@freezed
+class AppUser with _$AppUser {
+  const factory AppUser({
+    required String id,
+    required String firstName,
+    required String lastName,
+    String? profilePicture,
+    required String email,
+    required DateTime createdAt,
+  }) = _AppUser;
+
+  factory AppUser.fromJson(Map<String, dynamic> json) =>
+      _$AppUserFromJson(json);
 }

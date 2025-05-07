@@ -21,13 +21,12 @@ Rating _$RatingFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Rating {
-  String get id => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  String get itemId => throw _privateConstructorUsedError;
-  double get rating => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  String? get comment => throw _privateConstructorUsedError;
+  double get overall => throw _privateConstructorUsedError;
+  double get location => throw _privateConstructorUsedError;
+  double get cleanliness => throw _privateConstructorUsedError;
+  double get accuracy => throw _privateConstructorUsedError;
+  double get value => throw _privateConstructorUsedError;
+  double get communication => throw _privateConstructorUsedError;
 
   /// Serializes this Rating to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,13 +43,12 @@ abstract class $RatingCopyWith<$Res> {
       _$RatingCopyWithImpl<$Res, Rating>;
   @useResult
   $Res call({
-    String id,
-    String userId,
-    String itemId,
-    double rating,
-    String type,
-    DateTime createdAt,
-    String? comment,
+    double overall,
+    double location,
+    double cleanliness,
+    double accuracy,
+    double value,
+    double communication,
   });
 }
 
@@ -69,51 +67,45 @@ class _$RatingCopyWithImpl<$Res, $Val extends Rating>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? itemId = null,
-    Object? rating = null,
-    Object? type = null,
-    Object? createdAt = null,
-    Object? comment = freezed,
+    Object? overall = null,
+    Object? location = null,
+    Object? cleanliness = null,
+    Object? accuracy = null,
+    Object? value = null,
+    Object? communication = null,
   }) {
     return _then(
       _value.copyWith(
-            id:
-                null == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String,
-            userId:
-                null == userId
-                    ? _value.userId
-                    : userId // ignore: cast_nullable_to_non_nullable
-                        as String,
-            itemId:
-                null == itemId
-                    ? _value.itemId
-                    : itemId // ignore: cast_nullable_to_non_nullable
-                        as String,
-            rating:
-                null == rating
-                    ? _value.rating
-                    : rating // ignore: cast_nullable_to_non_nullable
+            overall:
+                null == overall
+                    ? _value.overall
+                    : overall // ignore: cast_nullable_to_non_nullable
                         as double,
-            type:
-                null == type
-                    ? _value.type
-                    : type // ignore: cast_nullable_to_non_nullable
-                        as String,
-            createdAt:
-                null == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime,
-            comment:
-                freezed == comment
-                    ? _value.comment
-                    : comment // ignore: cast_nullable_to_non_nullable
-                        as String?,
+            location:
+                null == location
+                    ? _value.location
+                    : location // ignore: cast_nullable_to_non_nullable
+                        as double,
+            cleanliness:
+                null == cleanliness
+                    ? _value.cleanliness
+                    : cleanliness // ignore: cast_nullable_to_non_nullable
+                        as double,
+            accuracy:
+                null == accuracy
+                    ? _value.accuracy
+                    : accuracy // ignore: cast_nullable_to_non_nullable
+                        as double,
+            value:
+                null == value
+                    ? _value.value
+                    : value // ignore: cast_nullable_to_non_nullable
+                        as double,
+            communication:
+                null == communication
+                    ? _value.communication
+                    : communication // ignore: cast_nullable_to_non_nullable
+                        as double,
           )
           as $Val,
     );
@@ -129,13 +121,12 @@ abstract class _$$RatingImplCopyWith<$Res> implements $RatingCopyWith<$Res> {
   @override
   @useResult
   $Res call({
-    String id,
-    String userId,
-    String itemId,
-    double rating,
-    String type,
-    DateTime createdAt,
-    String? comment,
+    double overall,
+    double location,
+    double cleanliness,
+    double accuracy,
+    double value,
+    double communication,
   });
 }
 
@@ -153,51 +144,45 @@ class __$$RatingImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? userId = null,
-    Object? itemId = null,
-    Object? rating = null,
-    Object? type = null,
-    Object? createdAt = null,
-    Object? comment = freezed,
+    Object? overall = null,
+    Object? location = null,
+    Object? cleanliness = null,
+    Object? accuracy = null,
+    Object? value = null,
+    Object? communication = null,
   }) {
     return _then(
       _$RatingImpl(
-        id:
-            null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String,
-        userId:
-            null == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                    as String,
-        itemId:
-            null == itemId
-                ? _value.itemId
-                : itemId // ignore: cast_nullable_to_non_nullable
-                    as String,
-        rating:
-            null == rating
-                ? _value.rating
-                : rating // ignore: cast_nullable_to_non_nullable
+        overall:
+            null == overall
+                ? _value.overall
+                : overall // ignore: cast_nullable_to_non_nullable
                     as double,
-        type:
-            null == type
-                ? _value.type
-                : type // ignore: cast_nullable_to_non_nullable
-                    as String,
-        createdAt:
-            null == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime,
-        comment:
-            freezed == comment
-                ? _value.comment
-                : comment // ignore: cast_nullable_to_non_nullable
-                    as String?,
+        location:
+            null == location
+                ? _value.location
+                : location // ignore: cast_nullable_to_non_nullable
+                    as double,
+        cleanliness:
+            null == cleanliness
+                ? _value.cleanliness
+                : cleanliness // ignore: cast_nullable_to_non_nullable
+                    as double,
+        accuracy:
+            null == accuracy
+                ? _value.accuracy
+                : accuracy // ignore: cast_nullable_to_non_nullable
+                    as double,
+        value:
+            null == value
+                ? _value.value
+                : value // ignore: cast_nullable_to_non_nullable
+                    as double,
+        communication:
+            null == communication
+                ? _value.communication
+                : communication // ignore: cast_nullable_to_non_nullable
+                    as double,
       ),
     );
   }
@@ -207,37 +192,33 @@ class __$$RatingImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RatingImpl implements _Rating {
   const _$RatingImpl({
-    required this.id,
-    required this.userId,
-    required this.itemId,
-    required this.rating,
-    this.type = 'property',
-    required this.createdAt,
-    this.comment,
+    required this.overall,
+    required this.location,
+    required this.cleanliness,
+    required this.accuracy,
+    required this.value,
+    required this.communication,
   });
 
   factory _$RatingImpl.fromJson(Map<String, dynamic> json) =>
       _$$RatingImplFromJson(json);
 
   @override
-  final String id;
+  final double overall;
   @override
-  final String userId;
+  final double location;
   @override
-  final String itemId;
+  final double cleanliness;
   @override
-  final double rating;
+  final double accuracy;
   @override
-  @JsonKey()
-  final String type;
+  final double value;
   @override
-  final DateTime createdAt;
-  @override
-  final String? comment;
+  final double communication;
 
   @override
   String toString() {
-    return 'Rating(id: $id, userId: $userId, itemId: $itemId, rating: $rating, type: $type, createdAt: $createdAt, comment: $comment)';
+    return 'Rating(overall: $overall, location: $location, cleanliness: $cleanliness, accuracy: $accuracy, value: $value, communication: $communication)';
   }
 
   @override
@@ -245,27 +226,28 @@ class _$RatingImpl implements _Rating {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RatingImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.itemId, itemId) || other.itemId == itemId) &&
-            (identical(other.rating, rating) || other.rating == rating) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.comment, comment) || other.comment == comment));
+            (identical(other.overall, overall) || other.overall == overall) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
+            (identical(other.cleanliness, cleanliness) ||
+                other.cleanliness == cleanliness) &&
+            (identical(other.accuracy, accuracy) ||
+                other.accuracy == accuracy) &&
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.communication, communication) ||
+                other.communication == communication));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    id,
-    userId,
-    itemId,
-    rating,
-    type,
-    createdAt,
-    comment,
+    overall,
+    location,
+    cleanliness,
+    accuracy,
+    value,
+    communication,
   );
 
   /// Create a copy of Rating
@@ -284,31 +266,28 @@ class _$RatingImpl implements _Rating {
 
 abstract class _Rating implements Rating {
   const factory _Rating({
-    required final String id,
-    required final String userId,
-    required final String itemId,
-    required final double rating,
-    final String type,
-    required final DateTime createdAt,
-    final String? comment,
+    required final double overall,
+    required final double location,
+    required final double cleanliness,
+    required final double accuracy,
+    required final double value,
+    required final double communication,
   }) = _$RatingImpl;
 
   factory _Rating.fromJson(Map<String, dynamic> json) = _$RatingImpl.fromJson;
 
   @override
-  String get id;
+  double get overall;
   @override
-  String get userId;
+  double get location;
   @override
-  String get itemId;
+  double get cleanliness;
   @override
-  double get rating;
+  double get accuracy;
   @override
-  String get type;
+  double get value;
   @override
-  DateTime get createdAt;
-  @override
-  String? get comment;
+  double get communication;
 
   /// Create a copy of Rating
   /// with the given fields replaced by the non-null parameter values.
