@@ -1,15 +1,14 @@
-import 'package:amar_thikana/core/network/network_info.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:amar_thikana/application/providers/network_info_provider.dart';
+import 'package:amar_thikana/application/providers/network_info_provider.dart' as providers;
 import 'package:amar_thikana/application/providers/property/property_repository_provider.dart';
 import 'package:amar_thikana/core/errors/failure.dart';
 import 'package:amar_thikana/domain/models/property/property.dart';
 import 'package:amar_thikana/domain/repository/property_repository_interface.dart';
- // your INetworkInfo
+import 'package:amar_thikana/core/network/network_info.dart';
 
 class GetPropertyDetailsUseCase {
   final PropertyRepositoryInterface _repository;
-  final INetworkInfo _networkInfo;
+  final NetworkInfo _networkInfo;
 
   GetPropertyDetailsUseCase(this._repository, this._networkInfo);
 
@@ -38,7 +37,7 @@ class GetPropertyDetailsUseCase {
 
 final getPropertyDetailsUseCaseProvider =
     Provider<GetPropertyDetailsUseCase>((ref) {
-  final repo        = ref.watch(propertyRepositoryProvider);
-  final networkInfo = ref.watch(networkInfoProvider);
+  final repo = ref.watch(propertyRepositoryProvider);
+  final networkInfo = ref.watch(providers.networkInfoProvider);
   return GetPropertyDetailsUseCase(repo, networkInfo);
 });

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:amar_thikana/domain/repository/property_repository_interface.dart';
-
 import '../../domain/models/property/property.dart';
 import '../datasources/remote/property_remote_datasource.dart';
 import '../datasources/local/property_local_datasource.dart';
@@ -24,7 +23,7 @@ class PropertyRepository implements PropertyRepositoryInterface {
       List<String> imageUrls = [];
       if (images.isNotEmpty) {
         imageUrls = await _storageService.uploadPropertyImages(
-          property.ownerId, // Changed from landlordId
+          property.ownerId,
           images,
         );
       }
@@ -32,7 +31,7 @@ class PropertyRepository implements PropertyRepositoryInterface {
       // Create a copy of the property with image URLs
       final propertyWithImages = property.copyWith(
         photos: imageUrls,
-      ); // Changed from imageUrls
+      );
 
       // Save to Firestore
       final propertyId = await _remoteDataSource.createProperty(
@@ -57,9 +56,7 @@ class PropertyRepository implements PropertyRepositoryInterface {
     List<String>? removedImageUrls,
   }) async {
     try {
-      List<String> updatedImageUrls = List.from(
-        property.photos,
-      ); // Changed from imageUrls
+      List<String> updatedImageUrls = List.from(property.photos);
 
       // Remove images that were marked for deletion
       if (removedImageUrls != null && removedImageUrls.isNotEmpty) {
@@ -72,7 +69,7 @@ class PropertyRepository implements PropertyRepositoryInterface {
       // Upload new images
       if (newImages != null && newImages.isNotEmpty) {
         final newUrls = await _storageService.uploadPropertyImages(
-          property.ownerId, // Changed from landlordId
+          property.ownerId,
           newImages,
         );
         updatedImageUrls.addAll(newUrls);
@@ -80,7 +77,7 @@ class PropertyRepository implements PropertyRepositoryInterface {
 
       // Update property with new image list
       final updatedProperty = property.copyWith(
-        photos: updatedImageUrls, // Changed from imageUrls
+        photos: updatedImageUrls,
         updatedAt: DateTime.now(),
       );
 
@@ -102,7 +99,6 @@ class PropertyRepository implements PropertyRepositoryInterface {
 
       // Delete all images from storage
       for (final url in property.photos) {
-        // Changed from imageUrls
         await _storageService.deleteFile(url);
       }
 
@@ -135,6 +131,25 @@ class PropertyRepository implements PropertyRepositoryInterface {
     } catch (e) {
       throw Exception('Failed to get property: $e');
     }
+  }
+  
+  @override
+  Future<Property?> getPropertyFromCache(String propertyId) async {
+    return await _localDataSource.getProperty(propertyId);
+  }
+  
+  @override
+  Future<Property?> getPropertyDetails(String propertyId) async {
+    try {
+      return await _remoteDataSource.getProperty(propertyId);
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  @override
+  Future<void> cachePropertyDetails(Property property) async {
+    await _localDataSource.cacheProperty(property);
   }
 
   @override

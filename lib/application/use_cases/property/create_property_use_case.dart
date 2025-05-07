@@ -1,5 +1,4 @@
-// lib/application/use_cases/property/create_property_use_case.dart
-
+import 'dart:io';
 import 'package:amar_thikana/application/providers/auth/auth_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,8 +14,8 @@ class CreatePropertyUseCase {
   CreatePropertyUseCase(this._repository, this._ownerId);
 
   /// Creates a new property and returns it with its assigned ID.
-  Future<Property> execute(Property property) async {
-    // 1) Field‑name fixes:
+  Future<Property> execute(Property property, List<File> images) async {
+    // 1) Field‑name validations:
     if (property.title.isEmpty) {
       throw Failure('Property title cannot be empty');
     }
@@ -26,23 +25,21 @@ class CreatePropertyUseCase {
     if (property.location == null) {
       throw Failure('Property location is required');
     }
-    if (property.photos.isEmpty) {
-      throw Failure('At least one property photo is required');
-    }
 
-    // 2) Pass the ownerId (and any other required args) into your repo:
-    //    assuming your interface is:
-    //      Future<String> createProperty(Property p, String ownerId);
-    final newId = await _repository.createProperty(property, _ownerId);
+    // Set owner ID from constructor
+    final propertyWithOwner = property.copyWith(ownerId: _ownerId);
+    
+    // 2) Pass the property and images to repository:
+    final newId = await _repository.createProperty(propertyWithOwner, images);
 
     // 3) Return a fully‑populated Property object (with the new ID):
-    return property.copyWith(id: newId);
+    return propertyWithOwner.copyWith(id: newId);
   }
 }
 
-/// Provider wiring—grabs both your repo and the current user’s ID:
+/// Provider wiring—grabs both your repo and the current user's ID:
 final createPropertyUseCaseProvider = Provider<CreatePropertyUseCase>((ref) {
   final repo    = ref.watch(propertyRepositoryProvider);
-  final ownerId = ref.watch(currentUserProvider)?.id; // Assuming you have a provider for the current user
-  return CreatePropertyUseCase(repo, ownerId!);
+  final ownerId = ref.watch(currentUserProvider)?.id ?? ''; 
+  return CreatePropertyUseCase(repo, ownerId);
 });

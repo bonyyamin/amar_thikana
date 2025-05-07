@@ -1,23 +1,27 @@
 import 'dart:io';
-import '../models/property/property.dart';
+import 'package:amar_thikana/domain/models/property/property.dart';
 
 abstract class PropertyRepositoryInterface {
-  // Create a new property listing
+  /// Creates a new property with images and returns the ID
   Future<String> createProperty(Property property, List<File> images);
   
-  // Update an existing property
-  Future<void> updateProperty(Property property, {List<File>? newImages, List<String>? removedImageUrls});
+  /// Updates an existing property
+  Future<void> updateProperty(
+    Property property, {
+    List<File>? newImages,
+    List<String>? removedImageUrls,
+  });
   
-  // Delete a property listing
+  /// Deletes a property by ID
   Future<void> deleteProperty(String propertyId);
   
-  // Get a property by ID
+  /// Gets a property by ID
   Future<Property> getProperty(String propertyId);
   
-  // Get all properties for a landlord
+  /// Gets properties belonging to a landlord
   Future<List<Property>> getLandlordProperties(String landlordId);
   
-  // Search properties with filters
+  /// Searches for properties based on criteria
   Future<List<Property>> searchProperties({
     String? propertyType,
     double? minPrice,
@@ -28,31 +32,28 @@ abstract class PropertyRepositoryInterface {
     double? minSize,
     double? maxSize,
   });
-  /// Remote fetch
-  Future<Property?> getPropertyDetails(String propertyId);
-
-  /// Local cache lookup
-  Future<Property?> getPropertyFromCache(String propertyId);
   
-  /// Save into local cache
-  Future<void> cachePropertyDetails(Property property);
-
-  // Get featured properties
+  /// Gets featured properties
   Future<List<Property>> getFeaturedProperties();
   
-  // Get recent listings
+  /// Gets recent property listings
   Future<List<Property>> getRecentListings({int limit = 10});
   
-  // Change property status (available, rented, etc.)
+  /// Updates a property's status
   Future<void> updatePropertyStatus(String propertyId, String status);
   
-  // Add photo to property
+  /// Adds a photo to a property
   Future<String> addPropertyPhoto(String propertyId, File image);
   
-  // Remove photo from property
+  /// Removes a photo from a property
   Future<void> removePropertyPhoto(String propertyId, String imageUrl);
-
-  // New methods for UpdatePropertyUseCase
-  Future<bool> propertyExists(String propertyId);
-  Future<void> savePropertyCache(Property property);
+  
+  /// Gets a property from cache
+  Future<Property?> getPropertyFromCache(String propertyId);
+  
+  /// Gets detailed information about a property
+  Future<Property?> getPropertyDetails(String propertyId);
+  
+  /// Caches property details
+  Future<void> cachePropertyDetails(Property property);
 }
