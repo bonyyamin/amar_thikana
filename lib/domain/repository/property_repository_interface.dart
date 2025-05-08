@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:amar_thikana/domain/models/property/property.dart';
 
 abstract class PropertyRepositoryInterface {
+  /// Checks if a property exists by ID
+  Future<bool> propertyExists(String propertyId);
+  /// Saves the property details in cache
+  Future<void> savePropertyCache(Property property);
+
   /// Creates a new property with images and returns the ID
   Future<String> createProperty(Property property, List<File> images);
   

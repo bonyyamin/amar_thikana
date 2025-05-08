@@ -142,6 +142,6 @@ final apiClientProvider = Provider<IApiClient>((ref) {
   return ApiClient(
     dio: dio,
     secureStorage: secureStorage,
-    appConfig: appConfig, baseUrl: '',
+    appConfig: appConfig, baseUrl: appConfig.apiBaseUrl,
   );
 });

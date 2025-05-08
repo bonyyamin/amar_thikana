@@ -15,6 +15,17 @@ class PropertyRepository implements PropertyRepositoryInterface {
     this._localDataSource,
     this._storageService,
   );
+    @override
+  Future<bool> propertyExists(String propertyId) async {
+    // Implementation for checking if the property exists (e.g., fetch from database)
+    return true; // Change this based on your logic
+  }
+
+  @override
+  Future<void> savePropertyCache(Property property) async {
+    // Implementation for caching property details
+  }
+
 
   @override
   Future<String> createProperty(Property property, List<File> images) async {

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,5 +19,11 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: FirebaseConfig.platformOptions);
 
+  // Initialize timezone data
+  tz.initializeTimeZones();
+  //optionally set the device's local timezone
+  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+  
   runApp(const ProviderScope(child: MyApp()));
 }

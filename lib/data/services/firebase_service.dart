@@ -5,7 +5,7 @@ class FirebaseService {
   final FirebaseFirestore _firestore;
   final FirebaseStorage _storage;
 
-  FirebaseService({FirebaseFirestore? firestore, FirebaseStorage? storage})
+  FirebaseService(FirebaseFirestore watch, {FirebaseFirestore? firestore, FirebaseStorage? storage})
     : _firestore = firestore ?? FirebaseFirestore.instance,
       _storage = storage ?? FirebaseStorage.instance;
 
