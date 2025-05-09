@@ -57,7 +57,7 @@ class _PropertyHeaderState extends State<PropertyHeader> {
                 child: Center(
                   child: DotsIndicator(
                     dotsCount: widget.images.length,
-                    position: _currentPage,
+                    position: _currentPage.toDouble(),
                     decorator: DotsDecorator(
                       color: Colors.grey[400]!,
                       activeColor: AppColors.primary,

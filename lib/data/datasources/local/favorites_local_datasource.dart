@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/utils/storage/local_storage.dart';
+import '../../../core/storage/local_storage.dart';
 import '../../../domain/models/property/property.dart';
 
 class FavoritesLocalDatasource {

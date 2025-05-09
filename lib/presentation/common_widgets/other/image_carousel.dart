@@ -76,7 +76,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
             child: Center(
               child: DotsIndicator(
                 dotsCount: widget.imageUrls.length,
-                position: _currentPage,
+                position: _currentPage.toDouble(),
                 decorator: DotsDecorator(
                   color: Colors.grey[400]!,
                   activeColor: AppColors.primary,
