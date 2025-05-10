@@ -2,14 +2,14 @@ import 'package:amar_thikana/data/services/notification_service.dart';
 import 'package:flutter/material.dart';
 
 
-class NotificationScreen extends StatefulWidget {
-  const NotificationScreen({super.key});
+class NotificationScreen2 extends StatefulWidget {
+  const NotificationScreen2({super.key});
 
   @override
-  State<NotificationScreen> createState() => _NotificationScreenState();
+  State<NotificationScreen2> createState() => _NotificationScreenState();
 }
 
-class _NotificationScreenState extends State<NotificationScreen> {
+class _NotificationScreenState extends State<NotificationScreen2> {
   final NotificationService _notificationService = NotificationService();
   bool _isPermissionGranted = false;
   DateTime _scheduledDate = DateTime.now().add(const Duration(minutes: 1));

@@ -1,6 +1,7 @@
 import 'package:amar_thikana/core/theme/app_colors.dart';
 import 'package:amar_thikana/core/theme/app_text_styles.dart';
-import 'package:amar_thikana/presentation/screens/common/notifications/notifications_screen.dart';
+import 'package:amar_thikana/presentation/screens/common/notifications/notification_screen.dart';
+import 'package:amar_thikana/presentation/screens/common/notifications/notifications_screen2.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
